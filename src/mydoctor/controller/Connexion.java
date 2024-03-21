@@ -2,19 +2,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package models;
+package mydoctor.controller;
 
 /**
  *
  * @author malco
  */
-public class Patient extends Personne {
-    int age = 0;
+public class Connexion {
     
-    public Patient(int _age){ this.age = _age; }
-    
-    public void enregistrer()
-    {
-        //sql request
+    public static boolean connect(String nom_utilisateur, String mot_de_passe){
+        System.out.println(nom_utilisateur);
+        System.out.println(mot_de_passe);
+        return true;
     }
 }

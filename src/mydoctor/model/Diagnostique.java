@@ -2,22 +2,21 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package models;
+package mydoctor.model;
 
 /**
  *
  * @author malco
  */
-public class Facture {
-    private String date = "";
-    private float totale = 0f;
-    private boolean envoye = false;
+public class Diagnostique {
+    private String date;
+    private String designation;
     
-    public Facture(String _date){
+    public Diagnostique(String _designation, String _date){
+        this.designation = _designation;
         this.date = _date;
     }
     
-    public void creer() {}
-    private void calculerTotale(){}
-    public void envoyer() {}
+    public void enregistre(){}
+    public void mettreAJour(){}
 }
