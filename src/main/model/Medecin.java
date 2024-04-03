@@ -2,15 +2,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package mydoctor.controller;
+package main.model;
 
 /**
  *
  * @author malco
  */
-public class MedecinController {
+public class Medecin extends Utilisateur {
+    private String specialite = "";
     
-    public static boolean connexion(String nom_utilisateur, String mot_de_passe){
-        return true;
+    public Medecin(String _specialite){ this.specialite = _specialite; }
+    
+    public void enregistrer()
+    {
+        //sql request
     }
 }

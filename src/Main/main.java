@@ -2,15 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
-package mydoctor;
+package Main;
 
-import mydoctor.controller.Connexion;
+import main.controller.Connexion;
 
 /**
  *
  * @author malco
  */
-public class MyDoctor {
+public class main {
 
     /**
      * @param args the command line arguments

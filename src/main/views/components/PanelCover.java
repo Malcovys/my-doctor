@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package mydoctor.views.components;
+package main.views.components;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -22,7 +22,8 @@ public class PanelCover extends javax.swing.JPanel {
     private final Color textForegroundColor = new Color(245,245,245);
     private final Font font = new Font("sansserif", 1, 30);
     private JLabel title;
-    private JLabel description;
+    private JLabel description1;
+    private JLabel description2;
     
 
     public PanelCover() {
@@ -55,10 +56,12 @@ public class PanelCover extends javax.swing.JPanel {
         title.setForeground(textForegroundColor);
         add(title);
         
-        description = new JLabel("Connectez-vous avec vos informations personnelles");
-        description.setForeground(textForegroundColor);
-        add(description);
-        
+        description1 = new JLabel("Pour vous connecter,");
+        description1.setForeground(textForegroundColor);
+        add(description1);
+        description2 = new JLabel("entrer vos informations personnelles");
+        description2.setForeground(textForegroundColor);
+        add(description2);
     }
     
     @Override

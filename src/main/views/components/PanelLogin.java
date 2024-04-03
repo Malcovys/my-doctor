@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package mydoctor.views.components;
+package main.views.components;
 
 import assets.swing.Button;
 import assets.swing.MyPasswordField;
@@ -12,6 +12,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import net.miginfocom.swing.MigLayout;
@@ -28,9 +29,9 @@ public class PanelLogin extends javax.swing.JPanel {
     private final int iconSize = 20;
     private final int fieldSize = 60;
     
-    public PanelLogin() {
+    public PanelLogin(ActionListener loginEvent) {
         initComponents();
-        init();
+        init(loginEvent);
     }
 
     /**
@@ -54,23 +55,23 @@ public class PanelLogin extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void init(){
+    private void init(ActionListener loginEvent){
         this.setLayout(new MigLayout("wrap", "push[center]push", "push[]25[]10[]25[]push"));
         JLabel label = new JLabel("Se connecter");
         label.setFont(new Font("sansserif", 1, 30));
         label.setForeground(textColor);
         this.add(label);
        
-        MyTextField txt_user = new MyTextField();
-        ImageIcon icon_user = new ImageIcon(getClass().getResource("/assets/user.png"));
-        Image resizedUserImage = icon_user.getImage().getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH);
+        MyTextField txt_email = new MyTextField();
+        ImageIcon icon_email = new ImageIcon(getClass().getResource("/assets/icons/envelope.png"));
+        Image resizedUserImage = icon_email.getImage().getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH);
         ImageIcon new_user_icon = new ImageIcon(resizedUserImage);
-        txt_user.setPrefixIcon(new_user_icon);
-        txt_user.setHint("Nom d'utilisatateur");
-        this.add(txt_user, "w " + fieldSize + "%");
+        txt_email.setPrefixIcon(new_user_icon);
+        txt_email.setHint("E-mail");
+        this.add(txt_email, "w " + fieldSize + "%");
         
         MyPasswordField user_password = new MyPasswordField();
-        ImageIcon icon_password = new ImageIcon(getClass().getResource("/assets/key.png"));
+        ImageIcon icon_password = new ImageIcon(getClass().getResource("/assets/icons/key.png"));
         Image resizedPasswordImage = icon_password.getImage().getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH);
         ImageIcon new_password_icon = new ImageIcon(resizedPasswordImage);
         user_password.setPrefixIcon(new_password_icon);
@@ -80,6 +81,7 @@ public class PanelLogin extends javax.swing.JPanel {
         Button loginButton = new Button();
         loginButton.setBackground(textColor);
         loginButton.setForeground(buttonForegroundColor);
+        loginButton.addActionListener(loginEvent);
         loginButton.setText("Connection");
         this.add(loginButton, "w 40%, h 40");
     }
