@@ -4,9 +4,9 @@
  */
 package mydoctor.views;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import mydoctor.views.components.PanelCover;
+import mydoctor.views.components.PanelLogin;
 import net.miginfocom.swing.MigLayout;
 /**
  *
@@ -16,8 +16,10 @@ public class Login extends javax.swing.JFrame {
     
     private MigLayout layout;
     private PanelCover cover;
-    private final double addSize = 20;
-    private final  double coverSize = 40;
+    private final float coverSize = 40f;
+    private PanelLogin login;
+    private final float loginSize = 60f; 
+    
 
     public Login() {
         initComponents();
@@ -26,15 +28,12 @@ public class Login extends javax.swing.JFrame {
     
     private void init(){
         layout = new MigLayout("fill, insets 0");
-        cover = new PanelCover();
         bg.setLayout(layout);
+        cover = new PanelCover();
         bg.add(cover, "width " + coverSize + "%, pos 0al 0 n 100%");
-        cover.addEvent(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("click");
-            }
-        });
+        login = new PanelLogin();
+        bg.add(login, "width " + loginSize + "%, pos 1al 0 n 100%");
+       
     }
 
     @SuppressWarnings("unchecked")
@@ -42,41 +41,21 @@ public class Login extends javax.swing.JFrame {
     private void initComponents() {
 
         bg = new javax.swing.JLayeredPane();
-        panelCover1 = new mydoctor.views.components.PanelCover();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         bg.setBackground(new java.awt.Color(255, 255, 255));
         bg.setOpaque(true);
 
-        javax.swing.GroupLayout panelCover1Layout = new javax.swing.GroupLayout(panelCover1);
-        panelCover1.setLayout(panelCover1Layout);
-        panelCover1Layout.setHorizontalGroup(
-            panelCover1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 110, Short.MAX_VALUE)
-        );
-        panelCover1Layout.setVerticalGroup(
-            panelCover1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 121, Short.MAX_VALUE)
-        );
-
-        bg.setLayer(panelCover1, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
         bg.setLayout(bgLayout);
         bgLayout.setHorizontalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bgLayout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addComponent(panelCover1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(602, Short.MAX_VALUE))
+            .addGap(0, 755, Short.MAX_VALUE)
         );
         bgLayout.setVerticalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bgLayout.createSequentialGroup()
-                .addGap(55, 55, 55)
-                .addComponent(panelCover1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(229, Short.MAX_VALUE))
+            .addGap(0, 405, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -106,6 +85,5 @@ public class Login extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLayeredPane bg;
-    private mydoctor.views.components.PanelCover panelCover1;
     // End of variables declaration//GEN-END:variables
 }
