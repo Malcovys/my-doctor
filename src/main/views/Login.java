@@ -1,16 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package main.views;
 
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import main.views.components.PanelCover;
-import main.views.components.PanelLoading;
-import main.views.components.PanelLogin;
+import javax.swing.JLayeredPane;
+import main.components.Message;
+import main.components.PanelCover;
+import main.components.PanelLoading;
+import main.components.PanelLogin;
+import main.connection.DatabaseConnection;
 import net.miginfocom.swing.MigLayout;
+import org.jdesktop.animation.timing.Animator;
+import org.jdesktop.animation.timing.TimingTarget;
+import org.jdesktop.animation.timing.TimingTargetAdapter;
 /**
  *
  * @author malco
@@ -40,20 +42,105 @@ public class Login extends javax.swing.JFrame {
         cover = new PanelCover();
         bg.add(cover, "width " + coverSize + "%, pos 0al 0 n 100%");
         
-        ActionListener loginEvent = new ActionListener() {
+        ActionListener loginCommande = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 login();
             }
         };
-        login = new PanelLogin(loginEvent);
+        login = new PanelLogin(loginCommande);
+        bg.setLayer(loading, JLayeredPane.POPUP_LAYER);
         bg.add(login, "width " + loginSize + "%, pos 1al 0 n 100%");
     }
     
     private void login(){
-        loading.setVisible(true);
-        System.out.println("login !");
+        //loading.setVisible(true);
+        //String email = login.getEmail();
+        //String password = login.getPassword();
+        
+        showMessage(Message.MessageType.ERROR, "Test Message");
     }
+    
+    private void showMessage(Message.MessageType messageType, String message){
+        Message ms = new Message();
+        ms.showMessage(messageType, message);
+     
+        TimingTarget showMessageBehavior = new TimingTargetAdapter() {
+            @Override
+            public void begin() {
+                if(!ms.isShow())
+                {
+                    bg.add(ms, "pos 0.5al -30", 0);
+                    ms.setVisible(true);
+                    ms.setShow(true);
+                    bg.repaint();
+                }
+            }
+
+            @Override
+            public void timingEvent(float fraction) {
+                if(ms.isShow()){
+                    float movement = 40 * fraction;
+
+                    layout.setComponentConstraints(ms, "pos 0.5al " +  + (int)(movement - 30));
+                    bg.repaint();
+                    bg.revalidate();
+                }
+            }
+        };
+        
+        TimingTarget unShowMessageBehavior = new TimingTargetAdapter() {
+
+            @Override
+            public void timingEvent(float fraction) {
+                if(ms.isShow()){
+                    float movement = 40 * (1f - fraction); //faction : 0 -> 1
+
+                    layout.setComponentConstraints(ms, "pos 0.5al " +  + (int)(movement - 30));
+                    bg.repaint();
+                    bg.revalidate();
+                }
+            }
+
+            @Override
+            public void end() {
+                if(ms.isShow()) {
+                   ms.setShow(false);
+                   bg.remove(ms);
+                   bg.repaint();
+                   bg.revalidate();
+                }  
+            } 
+        };
+        
+        Animator showMessageBehaviorAnimator = new Animator(350, showMessageBehavior);
+        showMessageBehaviorAnimator.setResolution(0);
+        showMessageBehaviorAnimator.setAcceleration(0.5f);
+        showMessageBehaviorAnimator.setDeceleration(0.5f);
+        showMessageBehaviorAnimator.start();
+        
+        Thread unShowMessage = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000);
+                    
+                    Animator unShowMessageBehaviorAnimator = new Animator(350, unShowMessageBehavior);
+                    
+                    unShowMessageBehaviorAnimator.setResolution(0);
+                    unShowMessageBehaviorAnimator.setAcceleration(0.5f);
+                    unShowMessageBehaviorAnimator.setDeceleration(0.5f);
+                    
+                    unShowMessageBehaviorAnimator.start();
+                } catch (InterruptedException e) {
+                    System.err.println(e);
+                }
+            }
+        });
+        
+        unShowMessage.start();
+    }
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -94,6 +181,12 @@ public class Login extends javax.swing.JFrame {
 
 
     public static void main(String args[]) {
+        
+        try {
+            DatabaseConnection.getInstance().connectToDatabase();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

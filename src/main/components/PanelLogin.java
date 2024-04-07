@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package main.views.components;
+package main.components;
 
 import assets.swing.Button;
 import assets.swing.MyPasswordField;
@@ -12,6 +12,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -22,16 +23,33 @@ import net.miginfocom.swing.MigLayout;
  * @author malco
  */
 public class PanelLogin extends javax.swing.JPanel {
+    
+    private String email = "";
+    private String password = "";
 
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+     
+    
     private final Color backgroundColor = new Color(255, 255, 255);
     private final Color buttonForegroundColor = new Color(250,250,250);
     private final Color textColor = new Color(35, 166, 97);
     private final int iconSize = 20;
     private final int fieldSize = 60;
     
+    private MyTextField txt_email;
+    private MyPasswordField txt_password;
+    private Button loginButton;
+    
     public PanelLogin(ActionListener loginEvent) {
         initComponents();
         init(loginEvent);
+        manageLoginCommand();
     }
 
     /**
@@ -55,35 +73,62 @@ public class PanelLogin extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void init(ActionListener loginEvent){
+    private void init(ActionListener loginCommande){
+        initLayout();
+        initEmailField();
+        initPasswordField();
+        initLoginButton(loginCommande);
+    }
+    
+    private void initLayout()
+    {
         this.setLayout(new MigLayout("wrap", "push[center]push", "push[]25[]10[]25[]push"));
         JLabel label = new JLabel("Se connecter");
         label.setFont(new Font("sansserif", 1, 30));
         label.setForeground(textColor);
         this.add(label);
-       
-        MyTextField txt_email = new MyTextField();
+    }
+    
+    private void initEmailField()
+    {
+        txt_email = new MyTextField();
         ImageIcon icon_email = new ImageIcon(getClass().getResource("/assets/icons/envelope.png"));
         Image resizedUserImage = icon_email.getImage().getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH);
         ImageIcon new_user_icon = new ImageIcon(resizedUserImage);
         txt_email.setPrefixIcon(new_user_icon);
         txt_email.setHint("E-mail");
         this.add(txt_email, "w " + fieldSize + "%");
-        
-        MyPasswordField user_password = new MyPasswordField();
+    }
+    
+    private void initPasswordField()
+    {
+        txt_password = new MyPasswordField();
         ImageIcon icon_password = new ImageIcon(getClass().getResource("/assets/icons/key.png"));
         Image resizedPasswordImage = icon_password.getImage().getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH);
         ImageIcon new_password_icon = new ImageIcon(resizedPasswordImage);
-        user_password.setPrefixIcon(new_password_icon);
-        user_password.setHint("Mot de passe");
-        this.add(user_password, "w " + fieldSize + "%");
-        
-        Button loginButton = new Button();
+        txt_password.setPrefixIcon(new_password_icon);
+        txt_password.setHint("Mot de passe");
+        this.add(txt_password, "w " + fieldSize + "%");
+    }
+    
+    private void initLoginButton(ActionListener loginCommande){
+        loginButton = new Button();
         loginButton.setBackground(textColor);
         loginButton.setForeground(buttonForegroundColor);
-        loginButton.addActionListener(loginEvent);
+        loginButton.addActionListener(loginCommande);
         loginButton.setText("Connection");
         this.add(loginButton, "w 40%, h 40");
+    }
+    
+    private void manageLoginCommand()
+    {
+        loginButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                email = txt_email.getText().trim();
+                password = String.valueOf(txt_password.getPassword());
+            }
+        });
     }
     
     @Override

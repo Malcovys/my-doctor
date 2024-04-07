@@ -4,8 +4,6 @@
  */
 package Main;
 
-import main.controller.Connexion;
-
 /**
  *
  * @author malco

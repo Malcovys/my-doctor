@@ -1,12 +1,10 @@
-package main.views.components;
+package main.components;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
+import java.awt.event.MouseAdapter;
 
 /**
  *
@@ -22,6 +20,8 @@ public class PanelLoading extends javax.swing.JPanel {
         setOpaque(false);
         setFocusCycleRoot(true);
         setVisible(false);
+        setFocusable(true);
+        addMouseListener(new MouseAdapter(){});
     }
 
     @SuppressWarnings("unchecked")
@@ -31,7 +31,7 @@ public class PanelLoading extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/animations/intersection_loading.gif"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/animations/loading.gif"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
