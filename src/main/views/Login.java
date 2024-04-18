@@ -3,12 +3,14 @@ package main.views;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import javax.swing.JLayeredPane;
 import main.components.Message;
-import main.components.PanelCover;
+import main.components.login.PanelCover;
 import main.components.PanelLoading;
-import main.components.PanelLogin;
+import main.components.login.PanelLogin;
 import main.connection.DatabaseConnection;
+import main.services.ServiceUser;
 import net.miginfocom.swing.MigLayout;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
@@ -26,6 +28,8 @@ public class Login extends javax.swing.JFrame {
     private PanelLogin login;
     private final float loginSize = 60f; 
     
+    private  ServiceUser service;
+    
 
     public Login() {
         initComponents();
@@ -33,6 +37,8 @@ public class Login extends javax.swing.JFrame {
     }
     
     private void init(){
+        service = new ServiceUser();
+        
         layout = new MigLayout("fill, insets 0");
         bg.setLayout(layout);
         
@@ -42,11 +48,9 @@ public class Login extends javax.swing.JFrame {
         cover = new PanelCover();
         bg.add(cover, "width " + coverSize + "%, pos 0al 0 n 100%");
         
-        ActionListener loginCommande = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                login();
-            }
+        ActionListener loginCommande;
+        loginCommande = (ActionEvent e) -> {
+            login();
         };
         login = new PanelLogin(loginCommande);
         bg.setLayer(loading, JLayeredPane.POPUP_LAYER);
@@ -54,11 +58,23 @@ public class Login extends javax.swing.JFrame {
     }
     
     private void login(){
-        //loading.setVisible(true);
-        //String email = login.getEmail();
-        //String password = login.getPassword();
+        loading.setVisible(true);
+        String email = login.getEmail();
+        String password = login.getPassword();
         
-        showMessage(Message.MessageType.ERROR, "Test Message");
+        try {
+            if(service.authUser(email, password)) {
+                loading.setVisible(false);
+                showMessage(Message.MessageType.SUCCESS, "Authentified");
+            } else {
+                loading.setVisible(false);
+                showMessage(Message.MessageType.ERROR, "Unauthentified");
+            }
+        } catch (SQLException e) {
+            loading.setVisible(false);
+            showMessage(Message.MessageType.ERROR, "Error auth");
+            System.err.println(e);
+        }
     }
     
     private void showMessage(Message.MessageType messageType, String message){
@@ -119,22 +135,19 @@ public class Login extends javax.swing.JFrame {
         showMessageBehaviorAnimator.setDeceleration(0.5f);
         showMessageBehaviorAnimator.start();
         
-        Thread unShowMessage = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(2000);
-                    
-                    Animator unShowMessageBehaviorAnimator = new Animator(350, unShowMessageBehavior);
-                    
-                    unShowMessageBehaviorAnimator.setResolution(0);
-                    unShowMessageBehaviorAnimator.setAcceleration(0.5f);
-                    unShowMessageBehaviorAnimator.setDeceleration(0.5f);
-                    
-                    unShowMessageBehaviorAnimator.start();
-                } catch (InterruptedException e) {
-                    System.err.println(e);
-                }
+        Thread unShowMessage = new Thread(() -> {
+            try {
+                Thread.sleep(2000);
+                
+                Animator unShowMessageBehaviorAnimator = new Animator(350, unShowMessageBehavior);
+                
+                unShowMessageBehaviorAnimator.setResolution(0);
+                unShowMessageBehaviorAnimator.setAcceleration(0.5f);
+                unShowMessageBehaviorAnimator.setDeceleration(0.5f);
+                
+                unShowMessageBehaviorAnimator.start();
+            } catch (InterruptedException e) {
+                System.err.println(e);
             }
         });
         
@@ -184,14 +197,12 @@ public class Login extends javax.swing.JFrame {
         
         try {
             DatabaseConnection.getInstance().connectToDatabase();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            System.err.println(e);
         }
         
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Login().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new Login().setVisible(true);
         });
     }
 

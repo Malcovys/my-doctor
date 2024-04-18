@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import main.model.ModelUser;
 
 /**
@@ -20,42 +22,62 @@ public class ServiceUser {
     }
     
     public void insertUser(ModelUser user) throws SQLException {
-        PreparedStatement p = conn.prepareStatement("INSERT INTO `user` (`userName`, `email`, `password`) VALUES (?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
-        p.setString(1, user.getUserName());
-        p.setString(2, user.getEmail());
-        p.setString(3, user.getPassword());
-        p.execute();
-        ResultSet r = p.getGeneratedKeys();
-        r.first();
-        int userID = r.getInt(1);
-        r.close();
-        p.close();
+        PreparedStatement query = conn.prepareStatement(
+                "INSERT INTO `user` (`roleID`, `userName`, `email`, `telephone`, `password`) "
+                        + "VALUES (?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        query.setInt(1, user.getRoleID());
+        query.setString(2, user.getUser_name());
+        query.setString(4, user.getEmail());
+        query.setString(5, user.getTelephone());
+        query.setString(6, user.getPassword());
+        query.execute();
+        
+        ResultSet res = query.getGeneratedKeys();
+        res.first();
+        int userID = res.getInt(1);
+        res.close();
+        res.close();
         user.setUserID(userID);
     }
     
-    public boolean checkDuplicateUser(String user) throws  SQLException {
-        boolean duplicate = false;
-        PreparedStatement query = conn.prepareStatement("select UserID form `user` where `userName`=? limit 1");
-        query.setString(0, user);
-        ResultSet response = query.executeQuery();
-        if(response.first()) {
-            duplicate = true;
+   public String[] getAllNames(int roleID) throws SQLException {
+        List<String> userNamesList = new ArrayList<>();
+        try (PreparedStatement query = conn.prepareStatement("select `userName` from `user` where `roleID` = ?")) {
+            query.setInt(1, roleID);
+            try (ResultSet res = query.executeQuery()) {
+                while (res.next()) {
+                    userNamesList.add(res.getString("userName"));
+                }
+            }
         }
-        response.close();
-        query.close();
-        return duplicate;
+        return userNamesList.toArray(String[]::new);
+    }
+
+    
+    public int getUserIDByName(String userName) throws SQLException {
+        int userId = -1;
+        try (PreparedStatement query = conn.prepareStatement("select `userID` from `user` where `userName`=?")) {
+            query.setString(1, userName);
+            try (ResultSet res = query.executeQuery()) {
+                if (res.next()) {
+                    userId = res.getInt("UserID");
+                }
+            }
+        }
+        return userId;
     }
     
-    public boolean checkDuplicateEmail(String email) throws  SQLException {
-        boolean duplicate = false;
-        PreparedStatement query = conn.prepareStatement("select UserID form `user` where `email`=? limit 1");
-        query.setString(0, email);
-        ResultSet response = query.executeQuery();
-        if(response.first()) {
-            duplicate = true;
+    public boolean authUser(String email, String password) throws  SQLException {
+        boolean authenticated = false;
+        try (PreparedStatement query = conn.prepareStatement("select `userID` from `user` where `email`=? and password=?")) {
+            query.setString(1, email);
+            query.setString(2, password);
+            try (ResultSet res = query.executeQuery()) {
+                if(res.next()) {
+                    authenticated = true;
+                }
+            }
         }
-        response.close();
-        query.close();
-        return duplicate;
+        return authenticated;
     }
 }

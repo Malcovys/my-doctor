@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package assets.swing;
 
 import java.awt.AlphaComposite;
@@ -36,6 +32,7 @@ public class Button extends JButton {
     private Point pressedPoint;
     private float alpha;
     private Color effectColor = new Color(255, 255, 255);
+    
 
     public Button() {
         setContentAreaFilled(false);

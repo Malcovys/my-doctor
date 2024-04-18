@@ -1,8 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
-package main.components;
+package main.components.login;
 
 import assets.swing.Button;
 import assets.swing.MyPasswordField;
@@ -122,12 +118,9 @@ public class PanelLogin extends javax.swing.JPanel {
     
     private void manageLoginCommand()
     {
-        loginButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                email = txt_email.getText().trim();
-                password = String.valueOf(txt_password.getPassword());
-            }
+        loginButton.addActionListener((ActionEvent e) -> {
+            email = txt_email.getText().trim();
+            password = String.valueOf(txt_password.getPassword());
         });
     }
     

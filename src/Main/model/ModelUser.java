@@ -5,23 +5,7 @@ package main.model;
  * @author malco
  */
 public class ModelUser {
-    private int userID;
-    private String userName;
-    private String email;
-    private String password;
 
-    public ModelUser(int userID, String userName, String email, String password) {
-        this.userID = userID;
-        this.userName = userName;
-        this.email = email;
-        this.password = password;
-    }
-
-    public ModelUser(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
-    
     public int getUserID() {
         return userID;
     }
@@ -30,12 +14,36 @@ public class ModelUser {
         this.userID = userID;
     }
 
-    public String getUserName() {
-        return userName;
+    public int getRoleID() {
+        return roleID;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setRoleID(int roleID) {
+        this.roleID = roleID;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getUser_name() {
+        return user_name;
+    }
+
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
     public String getEmail() {
@@ -53,4 +61,25 @@ public class ModelUser {
     public void setPassword(String password) {
         this.password = password;
     }
+    
+    private int userID;
+    private int roleID;
+    private String role;
+    private String user_name;
+    private String telephone;
+    private String email;
+    private String password;
+
+    public ModelUser(String role, String user_name, String telephone, String email) {
+        this.role = role;
+        this.user_name = user_name;
+        this.telephone = telephone;
+        this.email = email;
+    }
+
+    public ModelUser(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+  
 }
