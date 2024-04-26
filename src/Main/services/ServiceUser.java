@@ -2,9 +2,13 @@ package main.services;
 
 import main.connection.DatabaseConnection;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import main.model.ModelUser;
@@ -51,6 +55,34 @@ public class ServiceUser {
             }
         }
         return userNamesList.toArray(String[]::new);
+    }
+   
+    public  String[] getFreeDoctorAt(LocalDate date, LocalTime hour) throws SQLException {
+       List<String> freeDoctorList = new ArrayList<>();
+       
+       String sql = """
+            SELECT u.userName FROM user u
+            JOIN role r ON u.roleID = r.roleID
+            WHERE r.title = 'doctor'
+            AND u.userID NOT IN (
+                SELECT a.doctorID
+                FROM appointment a
+                WHERE a.date =? AND a.hour = ?
+            )                                           
+        """;
+       
+        try(PreparedStatement query = conn.prepareStatement(sql)) {
+             query.setDate(1, Date.valueOf(date));
+             query.setTime(2, Time.valueOf(hour));
+             
+             try (ResultSet res = query.executeQuery()) {
+                while (res.next()) {
+                    freeDoctorList.add(res.getString("userName"));
+                }
+            }
+        }
+        
+       return freeDoctorList.toArray(String[]::new);
     }
 
     

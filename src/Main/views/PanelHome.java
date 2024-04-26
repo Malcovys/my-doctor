@@ -15,6 +15,8 @@ import net.miginfocom.swing.MigLayout;
  * @author malco
  */
 public class PanelHome extends javax.swing.JPanel {
+    
+    private MainView parent;
 
     private PanelForm RendezVousForm;
     private PanelList RendezVousList;
@@ -28,7 +30,8 @@ public class PanelHome extends javax.swing.JPanel {
     private final Color focusBtnNewRdvTextColor = Color.WHITE;
     
     
-    public PanelHome() {
+    public PanelHome(MainView parent) {
+        this.parent = parent;
         initComponents();
         init();
     }
@@ -70,7 +73,7 @@ public class PanelHome extends javax.swing.JPanel {
             createAppoitment();
         };
         
-        RendezVousForm = new PanelForm(commande_back, commande_createRendezVous);
+        RendezVousForm = new PanelForm(commande_back, commande_createRendezVous, this.parent);
         scene.add(RendezVousForm);
         scene.repaint();
         scene.revalidate();

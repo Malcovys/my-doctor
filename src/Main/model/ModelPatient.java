@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package main.model;
 
 /**
@@ -13,11 +9,12 @@ public class ModelPatient {
     private int patient_id;
     private String firstName;
     private String lastName;
-    private String birthDate;
     private String email;
     private String telephone;
 
-    public ModelPatient() {}
+    public ModelPatient() {
+        this.patient_id = -1;
+    }
 
     public int getPatient_id() {
         return patient_id;
@@ -41,14 +38,6 @@ public class ModelPatient {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(String birthDate) {
-        this.birthDate = birthDate;
     }
 
     public String getEmail() {

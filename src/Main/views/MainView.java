@@ -1,9 +1,6 @@
 package main.views;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import javax.swing.JPanel;
 import main.components.Message;
 import net.miginfocom.swing.MigLayout;
@@ -41,7 +38,7 @@ public class MainView extends javax.swing.JPanel {
     
     private void nagigateTo(JPanel nav_btn) {
         if(nav_btn == btn_home) {
-            Home = new PanelHome();
+            Home = new PanelHome(this);
             viewPanel.add(Home, "width " + panelSize + "%, pos 0al 0 n 100%");
             
         }
