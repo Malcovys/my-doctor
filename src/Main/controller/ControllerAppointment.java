@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import main.model.ModelAppointment;
 import main.model.ModelPatient;
 import main.services.ServiceAppointment;
+import main.services.ServiceServices;
 import main.services.ServiceUser;
 
 /**
@@ -15,12 +16,13 @@ public class ControllerAppointment {
     public ControllerAppointment() {
     }
     
-    public void createAppointementWith(ModelPatient patient, String dorctor, String date, String hour) throws SQLException {
+    public void createAppointementWith(ModelPatient patient, String dorctor, String date, String hour, String reason) throws SQLException {
         ServiceUser serviceUser = new ServiceUser();
         int doctorId = serviceUser.getUserIDByName(dorctor);
         int receptionostID = serviceUser.getUserIDByName("receptioniste 1");
         
         ModelAppointment appointment = new ModelAppointment(patient.getPatient_id(), doctorId, receptionostID,date, hour);
+        appointment.setEndHour(ControllerServices.calculateEndHour(appointment.getHour(), reason));
         
         ServiceAppointment serviceAppointment = new ServiceAppointment();
         serviceAppointment.createAppoitment(appointment);
@@ -35,10 +37,5 @@ public class ControllerAppointment {
         modelAppointment.setHour(hour);
         
         return  serviceUser.getFreeDoctorAt(modelAppointment.getDate(), modelAppointment.getHour());
-    }
-    
-    private ModelAppointment[] getUpCommingAppointements() throws SQLException {
-        ServiceAppointment serviceAppointment = new ServiceAppointment();
-        return serviceAppointment.getAllUpCommingAppointments();
     }
 }

@@ -15,6 +15,7 @@ public class ModelAppointment {
     private int receptionist_id;
     private LocalDate date;
     private LocalTime hour;
+    private LocalTime endHour;
     
     DateTimeFormatter dateFormat =  DateTimeFormatter.ofPattern("dd-MM-yyyy");
     DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
@@ -26,6 +27,7 @@ public class ModelAppointment {
         this.receptionist_id = receptionist_id;
         this.date = LocalDate.parse(date, dateFormat);
         this.hour = LocalTime.parse(hour, timeFormat);
+        this.endHour = null;
     }
 
     public ModelAppointment() {
@@ -34,6 +36,7 @@ public class ModelAppointment {
         this.receptionist_id = -1;
         this.date = null;
         this.hour = null;
+        this.endHour = null;
     }  
     
     public int getAppointementID() {
@@ -58,6 +61,10 @@ public class ModelAppointment {
     
     public LocalTime getHour() {
         return hour;
+    }
+    
+    public LocalTime getEndHour() {
+        return endHour;
     }
 
     public void setAppointementID(int appointementID) {
@@ -90,5 +97,13 @@ public class ModelAppointment {
     
     public void setHour(String hour) {
         this.hour = LocalTime.parse(hour, timeFormat);
+    }
+    
+    public void setEndHour(LocalTime endHour) {
+        this.endHour = endHour;
+    }
+    
+    public void setEndHour(String endHour) {
+        this.endHour = LocalTime.parse(endHour, timeFormat);
     }
 }

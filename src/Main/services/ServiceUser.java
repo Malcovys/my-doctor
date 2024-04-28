@@ -46,14 +46,15 @@ public class ServiceUser {
     
    public String[] getAllNames(int roleID) throws SQLException {
         List<String> userNamesList = new ArrayList<>();
-        try (PreparedStatement query = conn.prepareStatement("select `userName` from `user` where `roleID` = ?")) {
-            query.setInt(1, roleID);
-            try (ResultSet res = query.executeQuery()) {
-                while (res.next()) {
-                    userNamesList.add(res.getString("userName"));
-                }
-            }
+        PreparedStatement query = conn.prepareStatement("select `userName` from `user` where `roleID` = ?");
+        query.setInt(1, roleID);
+        
+        ResultSet res = query.executeQuery();
+        
+        while (res.next()) {
+            userNamesList.add(res.getString("userName"));
         }
+        
         return userNamesList.toArray(String[]::new);
     }
    
@@ -67,19 +68,18 @@ public class ServiceUser {
             AND u.userID NOT IN (
                 SELECT a.doctorID
                 FROM appointment a
-                WHERE a.date =? AND a.hour = ?
+                WHERE a.date =? AND a.endHour >= ?
             )                                           
         """;
        
-        try(PreparedStatement query = conn.prepareStatement(sql)) {
-             query.setDate(1, Date.valueOf(date));
-             query.setTime(2, Time.valueOf(hour));
+        PreparedStatement query = conn.prepareStatement(sql);
+        query.setDate(1, Date.valueOf(date));
+        query.setTime(2, Time.valueOf(hour));
              
-             try (ResultSet res = query.executeQuery()) {
-                while (res.next()) {
-                    freeDoctorList.add(res.getString("userName"));
-                }
-            }
+        ResultSet res = query.executeQuery();
+
+        while (res.next()) {
+            freeDoctorList.add(res.getString("userName"));
         }
         
        return freeDoctorList.toArray(String[]::new);
@@ -88,28 +88,31 @@ public class ServiceUser {
     
     public int getUserIDByName(String userName) throws SQLException {
         int userId = -1;
-        try (PreparedStatement query = conn.prepareStatement("select `userID` from `user` where `userName`=?")) {
-            query.setString(1, userName);
-            try (ResultSet res = query.executeQuery()) {
-                if (res.next()) {
-                    userId = res.getInt("UserID");
-                }
-            }
+        PreparedStatement query = conn.prepareStatement("select `userID` from `user` where `userName`=?");
+        query.setString(1, userName);
+        
+        ResultSet res = query.executeQuery();
+        
+        if (res.next()) {
+            userId = res.getInt("UserID");
         }
+            
         return userId;
     }
     
     public boolean authUser(String email, String password) throws  SQLException {
         boolean authenticated = false;
-        try (PreparedStatement query = conn.prepareStatement("select `userID` from `user` where `email`=? and password=?")) {
-            query.setString(1, email);
-            query.setString(2, password);
-            try (ResultSet res = query.executeQuery()) {
-                if(res.next()) {
-                    authenticated = true;
-                }
-            }
+        
+        PreparedStatement query = conn.prepareStatement("select `userID` from `user` where `email`=? and password=?");
+        query.setString(1, email);
+        query.setString(2, password);
+        
+        ResultSet res = query.executeQuery();
+        
+        if(res.next()) {
+            authenticated = true;
         }
+        
         return authenticated;
     }
 }

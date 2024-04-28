@@ -2,14 +2,12 @@ package main.components.appointement;
 
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import main.components.Message;
 import main.controller.ControllerAppointment;
 import main.controller.ControllerPatient;
-import main.controller.ControllerUser;
-import main.model.ModelAppointment;
+import main.controller.ControllerServices;
 import main.model.ModelPatient;
 import main.views.MainView;
 
@@ -34,9 +32,9 @@ public class PanelForm extends javax.swing.JPanel {
      * Creates new form AppointementForm
      * @param commande_back
      * @param commande_createAppointment
-     * @throws java.sql.SQLException
+     * @param grandParent
      */
-    public PanelForm(ActionListener commande_back, ActionListener commande_createAppointment, MainView grandParent) throws SQLException {
+    public PanelForm(ActionListener commande_back, ActionListener commande_createAppointment, MainView grandParent) {
         this.grandParent = grandParent;
         this.modelPatient = new ModelPatient();
         this.patientIsExist = false;
@@ -47,15 +45,28 @@ public class PanelForm extends javax.swing.JPanel {
         initCommandeCreateAppoitment(commande_createAppointment);
     }
     
-    private void init() throws SQLException{
+    private void init() {
         getInitialInputValues();
         initComboBox();
     }
     
-    private void initComboBox() throws SQLException {
+    private void initComboBox() {
         defaultComboBoxValue = "---Liste---";
         choice_doctor.add(defaultComboBoxValue);
+        choice_rdvReason.add(defaultComboBoxValue);
+        try {
+            ControllerServices controllerServices = new ControllerServices();
+            
+            String[] listService = controllerServices.getAllServicesTitle();
+            for (String service : listService) {
+                choice_rdvReason.add(service);
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(PanelForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+    
     
     private void getInitialInputValues() {
         initialtPatientfistName = patient_firstName.getText().strip();
@@ -89,7 +100,7 @@ public class PanelForm extends javax.swing.JPanel {
     }
     
     private boolean validateComboBox() {
-        return !choice_doctor.getSelectedItem().equals(defaultComboBoxValue);
+        return !choice_rdvReason.getSelectedItem().equals(defaultComboBoxValue) && !choice_doctor.getSelectedItem().equals(defaultComboBoxValue);
     }
     
     private void setPatientData() {
@@ -126,6 +137,8 @@ public class PanelForm extends javax.swing.JPanel {
         rdv_date = new javax.swing.JTextField();
         text_hour = new javax.swing.JLabel();
         rdv_hour = new javax.swing.JTextField();
+        text_rdv_reason = new javax.swing.JLabel();
+        choice_rdvReason = new java.awt.Choice();
         text_patient = new javax.swing.JLabel();
         patient_firstName = new javax.swing.JTextField();
         patient_lastName = new javax.swing.JTextField();
@@ -184,6 +197,16 @@ public class PanelForm extends javax.swing.JPanel {
         rdv_hour.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rdv_hourActionPerformed(evt);
+            }
+        });
+
+        text_rdv_reason.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        text_rdv_reason.setText("Raison :");
+
+        choice_rdvReason.setBackground(new java.awt.Color(242, 242, 242));
+        choice_rdvReason.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                choice_rdvReasonMousePressed(evt);
             }
         });
 
@@ -307,29 +330,16 @@ public class PanelForm extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(text_patient)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(22, 22, 22)
                                 .addComponent(btn_cancel, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 495, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btn_validate, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(rdv)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addComponent(text_date)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(rdv_date, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(text_hour)))
-                                .addGap(18, 18, 18)
-                                .addComponent(rdv_hour, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(12, 12, 12))
-                            .addComponent(text_patient)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(patient_firstName)
@@ -337,10 +347,26 @@ public class PanelForm extends javax.swing.JPanel {
                                 .addGap(196, 196, 196)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(patient_email)
-                                    .addComponent(patient_lastName))))
+                                    .addComponent(patient_lastName)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(text_date)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(rdv_date, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(40, 40, 40)
+                                .addComponent(text_hour)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(rdv_hour, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(2, 2, 2)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(40, 40, 40)
+                                .addComponent(text_rdv_reason)
+                                .addGap(12, 12, 12)
+                                .addComponent(choice_rdvReason, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(20, 20, 20))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(rdv)
                             .addComponent(form_title)
                             .addComponent(choice_doctor, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(text_doctor))
@@ -356,12 +382,15 @@ public class PanelForm extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(rdv)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rdv_date, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rdv_hour, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(text_date)
-                    .addComponent(text_hour)
-                    .addComponent(jButton1))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(rdv_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(rdv_hour, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(text_date)
+                        .addComponent(text_hour)
+                        .addComponent(jButton1)
+                        .addComponent(text_rdv_reason))
+                    .addComponent(choice_rdvReason, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
                 .addComponent(text_patient)
                 .addGap(18, 18, 18)
@@ -376,7 +405,7 @@ public class PanelForm extends javax.swing.JPanel {
                 .addComponent(text_doctor, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(choice_doctor, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_cancel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_validate, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -425,8 +454,9 @@ public class PanelForm extends javax.swing.JPanel {
                         String doctor = choice_doctor.getSelectedItem();
                         String date = rdv_date.getText().strip();
                         String hour = rdv_hour.getText().strip();
+                        String reason = choice_rdvReason.getSelectedItem();
 
-                        controllerAppoitment.createAppointementWith(this.modelPatient, doctor, date, hour);
+                        controllerAppoitment.createAppointementWith(this.modelPatient, doctor, date, hour, reason);
 
                         grandParent.showMessage(Message.MessageType.SUCCESS, "Enregistrement effectué");
                         
@@ -436,7 +466,7 @@ public class PanelForm extends javax.swing.JPanel {
                         grandParent.showMessage(Message.MessageType.ERROR, "Une erreur est survenue");
                     }
                 } else {
-                    grandParent.showMessage(Message.MessageType.ERROR, "Veuillez selectionner un medecin");
+                    grandParent.showMessage(Message.MessageType.ERROR, "Selection manquante");
                 } 
             } else {
                 grandParent.showMessage(Message.MessageType.ERROR, "Le champs téléphone ne peut contenir de lettres");
@@ -550,12 +580,17 @@ public class PanelForm extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_choice_doctorMousePressed
 
+    private void choice_rdvReasonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_choice_rdvReasonMousePressed
+
+    }//GEN-LAST:event_choice_rdvReasonMousePressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private assets.swing.Button btn_cancel;
     private assets.swing.Button btn_validate;
     private assets.swing.datechooser.DateChooser calandar;
     private java.awt.Choice choice_doctor;
+    private java.awt.Choice choice_rdvReason;
     private javax.swing.JLabel form_title;
     private javax.swing.JButton jButton1;
     private javax.swing.JSeparator jSeparator1;
@@ -570,6 +605,7 @@ public class PanelForm extends javax.swing.JPanel {
     private javax.swing.JLabel text_doctor;
     private javax.swing.JLabel text_hour;
     private javax.swing.JLabel text_patient;
+    private javax.swing.JLabel text_rdv_reason;
     private com.raven.swing.TimePicker timePicker;
     // End of variables declaration//GEN-END:variables
 
