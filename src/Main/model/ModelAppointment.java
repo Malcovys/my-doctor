@@ -13,6 +13,7 @@ public class ModelAppointment {
     private int patient_id;
     private int doctor_id;
     private int receptionist_id;
+    private int service_id;
     private LocalDate date;
     private LocalTime hour;
     private LocalTime endHour;
@@ -25,6 +26,7 @@ public class ModelAppointment {
         this.patient_id = patient_id;
         this.doctor_id = doctor_id;
         this.receptionist_id = receptionist_id;
+        this.service_id = -1;
         this.date = LocalDate.parse(date, dateFormat);
         this.hour = LocalTime.parse(hour, timeFormat);
         this.endHour = null;
@@ -34,6 +36,7 @@ public class ModelAppointment {
         this.patient_id = -1;
         this.doctor_id = -1;
         this.receptionist_id = -1;
+        this.doctor_id = -1;
         this.date = null;
         this.hour = null;
         this.endHour = null;
@@ -53,6 +56,10 @@ public class ModelAppointment {
 
     public int getReceptionist_id() {
         return receptionist_id;
+    }
+    
+    public int getService_id() {
+        return service_id;
     }
 
     public LocalDate getDate() {
@@ -81,6 +88,10 @@ public class ModelAppointment {
 
     public void setReceptionist_id(int receptionist_id) {
         this.receptionist_id = receptionist_id;
+    }
+    
+    public void setService_id(int service_id) {
+        this.service_id = service_id;
     }
 
     public void setDate(LocalDate date) {

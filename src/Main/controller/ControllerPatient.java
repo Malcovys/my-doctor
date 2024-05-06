@@ -9,10 +9,8 @@ import main.services.ServicePatient;
  * @author malco
  */
 public class ControllerPatient {
-
-    public ControllerPatient() {}
     
-    public boolean getPatientsByTelephone(ModelPatient patient) throws SQLException {
+    public static boolean getPatientsByTelephone(ModelPatient patient) throws SQLException {
         ServicePatient servicePatient = new ServicePatient();
         ModelPatient patient_in = servicePatient.getPatientByTelephone(patient.getTelephone());
         
@@ -28,7 +26,7 @@ public class ControllerPatient {
         return false;
     }
     
-    public void savePatient(ModelPatient patient) throws SQLException {
+    public static void savePatient(ModelPatient patient) throws SQLException {
         ServicePatient servicePatient = new ServicePatient();
         servicePatient.insertPatient(patient);
     }

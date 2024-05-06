@@ -20,6 +20,20 @@ public class ServiceServices {
         conn = DatabaseConnection.getInstance().getConnection();
     }
     
+    public int getId(String title) throws SQLException {
+        int id = -1;
+        
+        PreparedStatement query = conn.prepareStatement("SELECT `serviceID` FROM `service` WHERE `title` = ?");
+        query.setString(1, title);
+        
+        ResultSet res = query.executeQuery();
+        if(res.next()) {
+           id = res.getInt("serviceID");
+        }
+        
+        return  id;
+    }
+    
     public String[] getAllTile() throws SQLException {
         List<String> serviceList = new ArrayList<>();
        

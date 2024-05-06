@@ -8,6 +8,7 @@ import main.components.Message;
 import main.controller.ControllerAppointment;
 import main.controller.ControllerPatient;
 import main.controller.ControllerServices;
+import main.controller.ControllerUser;
 import main.model.ModelPatient;
 import main.views.MainView;
 
@@ -17,9 +18,9 @@ import main.views.MainView;
  */
 public class PanelForm extends javax.swing.JPanel {
     
-    private MainView grandParent;
+    private final MainView grandParent;
     
-    private ModelPatient modelPatient;
+    private final ModelPatient modelPatient;
     private boolean patientIsExist;
     
     private String initialtPatientfistName;
@@ -55,9 +56,7 @@ public class PanelForm extends javax.swing.JPanel {
         choice_doctor.add(defaultComboBoxValue);
         choice_rdvReason.add(defaultComboBoxValue);
         try {
-            ControllerServices controllerServices = new ControllerServices();
-            
-            String[] listService = controllerServices.getAllServicesTitle();
+            String[] listService = ControllerServices.getAllServicesTitle();
             for (String service : listService) {
                 choice_rdvReason.add(service);
             }
@@ -112,7 +111,6 @@ public class PanelForm extends javax.swing.JPanel {
     private boolean validateTelephoneField() {
         try {
             Integer.valueOf(patient_telephone.getText().strip());
-            System.out.println("Pas Valide");
             return true;
         } catch (NumberFormatException e) {
             return  false;
@@ -178,37 +176,17 @@ public class PanelForm extends javax.swing.JPanel {
 
         rdv_date.setBackground(new java.awt.Color(242, 242, 242));
         rdv_date.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        rdv_date.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdv_dateActionPerformed(evt);
-            }
-        });
 
         text_hour.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         text_hour.setText("Heure :");
 
         rdv_hour.setBackground(new java.awt.Color(242, 242, 242));
         rdv_hour.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        rdv_hour.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                rdv_hourFocusGained(evt);
-            }
-        });
-        rdv_hour.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdv_hourActionPerformed(evt);
-            }
-        });
 
         text_rdv_reason.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         text_rdv_reason.setText("Raison :");
 
         choice_rdvReason.setBackground(new java.awt.Color(242, 242, 242));
-        choice_rdvReason.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                choice_rdvReasonMousePressed(evt);
-            }
-        });
 
         text_patient.setBackground(new java.awt.Color(255, 255, 255));
         text_patient.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
@@ -226,11 +204,6 @@ public class PanelForm extends javax.swing.JPanel {
                 patient_firstNameFocusLost(evt);
             }
         });
-        patient_firstName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                patient_firstNameActionPerformed(evt);
-            }
-        });
 
         patient_lastName.setBackground(new java.awt.Color(242, 242, 242));
         patient_lastName.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
@@ -241,11 +214,6 @@ public class PanelForm extends javax.swing.JPanel {
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 patient_lastNameFocusLost(evt);
-            }
-        });
-        patient_lastName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                patient_lastNameActionPerformed(evt);
             }
         });
 
@@ -260,11 +228,6 @@ public class PanelForm extends javax.swing.JPanel {
                 patient_emailFocusLost(evt);
             }
         });
-        patient_email.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                patient_emailActionPerformed(evt);
-            }
-        });
 
         patient_telephone.setBackground(new java.awt.Color(242, 242, 242));
         patient_telephone.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
@@ -275,11 +238,6 @@ public class PanelForm extends javax.swing.JPanel {
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 patient_telephoneFocusLost(evt);
-            }
-        });
-        patient_telephone.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                patient_telephoneActionPerformed(evt);
             }
         });
 
@@ -299,11 +257,6 @@ public class PanelForm extends javax.swing.JPanel {
         btn_cancel.setBackground(new java.awt.Color(242, 242, 242));
         btn_cancel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         btn_cancel.setText("Retour");
-        btn_cancel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_cancelActionPerformed(evt);
-            }
-        });
 
         btn_validate.setBackground(new java.awt.Color(35, 166, 97));
         btn_validate.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -413,50 +366,25 @@ public class PanelForm extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void patient_firstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_patient_firstNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_patient_firstNameActionPerformed
-
-    private void patient_lastNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_patient_lastNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_patient_lastNameActionPerformed
-
-    private void patient_emailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_patient_emailActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_patient_emailActionPerformed
-
-    private void patient_telephoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_patient_telephoneActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_patient_telephoneActionPerformed
-
-    private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_cancelActionPerformed
-
     private void btn_validateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_validateActionPerformed
         if(validateTextFields()) {
             if(validateTelephoneField()) {
                 if(validateComboBox()) {
-                    ControllerAppointment controllerAppoitment = new ControllerAppointment();
-                    
                     try {
                         if(!patientIsExist) {
                             this.modelPatient.setFirstName(patient_firstName.getText().strip());
                             this.modelPatient.setLastName(patient_lastName.getText().strip());
                             this.modelPatient.setEmail(patient_email.getText().strip());
 
-
-                            ControllerPatient controllerPatient = new ControllerPatient();
-                            controllerPatient.savePatient(this.modelPatient);
+                            ControllerPatient.savePatient(this.modelPatient);
                         }
-
 
                         String doctor = choice_doctor.getSelectedItem();
                         String date = rdv_date.getText().strip();
                         String hour = rdv_hour.getText().strip();
                         String reason = choice_rdvReason.getSelectedItem();
 
-                        controllerAppoitment.createAppointementWith(this.modelPatient, doctor, date, hour, reason);
+                        ControllerAppointment.createAppointementWith(this.modelPatient, doctor, date, hour, reason);
 
                         grandParent.showMessage(Message.MessageType.SUCCESS, "Enregistrement effectué");
                         
@@ -476,18 +404,6 @@ public class PanelForm extends javax.swing.JPanel {
         }
         
     }//GEN-LAST:event_btn_validateActionPerformed
-
-    private void rdv_dateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdv_dateActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rdv_dateActionPerformed
-
-    private void rdv_hourActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdv_hourActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rdv_hourActionPerformed
-
-    private void rdv_hourFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_rdv_hourFocusGained
-        
-    }//GEN-LAST:event_rdv_hourFocusGained
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         timePicker.showPopup(this, 100, 100);
@@ -542,10 +458,8 @@ public class PanelForm extends javax.swing.JPanel {
             if(validateTelephoneField()) {
                 String telephone = patient_telephone.getText().strip();
                 this.modelPatient.setTelephone(telephone);
-
-                ControllerPatient controllerPatient = new ControllerPatient();
                 try {
-                    patientIsExist = controllerPatient.getPatientsByTelephone(this.modelPatient);
+                    patientIsExist = ControllerPatient.getPatientsByTelephone(this.modelPatient);
                     if(patientIsExist) { 
                         setPatientData();
                     }
@@ -557,10 +471,9 @@ public class PanelForm extends javax.swing.JPanel {
     }//GEN-LAST:event_patient_telephoneFocusLost
 
     private void choice_doctorMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_choice_doctorMousePressed
-        ControllerAppointment appointmentController = new ControllerAppointment();
         String[] freeDoctorsList = null;
         try {
-            freeDoctorsList = appointmentController.getFreeDoctor(rdv_date.getText().strip(), rdv_hour.getText().strip());
+            freeDoctorsList = ControllerUser.getFreeDoctor(rdv_date.getText().strip(), rdv_hour.getText().strip());
 
             if(freeDoctorsList.length == 0) {
                 choice_doctor.removeAll();
@@ -579,10 +492,6 @@ public class PanelForm extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_choice_doctorMousePressed
-
-    private void choice_rdvReasonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_choice_rdvReasonMousePressed
-
-    }//GEN-LAST:event_choice_rdvReasonMousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

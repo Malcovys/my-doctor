@@ -9,12 +9,15 @@ import main.services.ServiceServices;
  * @author malco
  */
 public class ControllerServices {
-
-    public ControllerServices() {}
     
-    public String[] getAllServicesTitle() throws SQLException {
+    public static String[] getAllServicesTitle() throws SQLException {
         ServiceServices services = new ServiceServices();
         return  services.getAllTile();
+    }
+    
+    public static int getIdOf(String title) throws SQLException {
+        ServiceServices services = new ServiceServices();
+        return services.getId(title); 
     }
     
     public static LocalTime calculateEndHour(LocalTime hour, String reason) throws SQLException {

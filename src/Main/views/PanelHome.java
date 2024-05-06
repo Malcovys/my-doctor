@@ -16,21 +16,28 @@ import net.miginfocom.swing.MigLayout;
  */
 public class PanelHome extends javax.swing.JPanel {
     
-    private MainView parent;
+    private final MainView parent;
+    
+    private boolean btn_new_rdv_isActive;
 
     private PanelForm RendezVousForm;
     private PanelList RendezVousList;
     
     private MigLayout layout;
     
-    private final Color iniatlBtnNewRdvColor = Color.WHITE;
-    private final Color focusBtnNewRdvColor = new Color(35,166,97);
+    private final Color iniatlBtnNewRdvColor;
+    private final Color focusBtnNewRdvColor;
     
-    private final Color initalBtnNewRdvTextColor = Color.BLACK;
-    private final Color focusBtnNewRdvTextColor = Color.WHITE;
+    private final Color initalBtnNewRdvTextColor;
+    private final Color focusBtnNewRdvTextColor;
     
     
     public PanelHome(MainView parent) {
+        this.focusBtnNewRdvTextColor = Color.WHITE;
+        this.initalBtnNewRdvTextColor = Color.BLACK;
+        this.focusBtnNewRdvColor = new Color(35,166,97);
+        this.iniatlBtnNewRdvColor = Color.WHITE;
+        this.btn_new_rdv_isActive = false;
         this.parent = parent;
         initComponents();
         init();
@@ -66,6 +73,7 @@ public class PanelHome extends javax.swing.JPanel {
         ActionListener commande_back;
         commande_back = (ActionEvent e) -> {
             setRendezVousListPanel();
+            btn_new_rdv_isActive = false;
         };
         
         ActionListener commande_createRendezVous;
@@ -170,7 +178,10 @@ public class PanelHome extends javax.swing.JPanel {
 
     private void btn_new_rdvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_new_rdvActionPerformed
         try {
-            setNewRendezVousForm();
+            if(!btn_new_rdv_isActive) {
+                setNewRendezVousForm();
+                btn_new_rdv_isActive = true;
+            }
         } catch (SQLException ex) {
             Logger.getLogger(PanelHome.class.getName()).log(Level.SEVERE, null, ex);
         }

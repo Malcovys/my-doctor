@@ -205,9 +205,6 @@
           <Font name="SansSerif" size="14" style="0"/>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdv_dateActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="text_hour">
       <Properties>
@@ -226,10 +223,6 @@
           <Font name="SansSerif" size="14" style="0"/>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="rdv_hourFocusGained"/>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdv_hourActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="text_rdv_reason">
       <Properties>
@@ -245,9 +238,6 @@
           <Color blue="f2" green="f2" red="f2" type="rgb"/>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="choice_rdvReasonMousePressed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="text_patient">
       <Properties>
@@ -274,7 +264,6 @@
       <Events>
         <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="patient_firstNameFocusGained"/>
         <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="patient_firstNameFocusLost"/>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="patient_firstNameActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="patient_lastName">
@@ -290,7 +279,6 @@
       <Events>
         <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="patient_lastNameFocusGained"/>
         <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="patient_lastNameFocusLost"/>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="patient_lastNameActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="patient_email">
@@ -306,7 +294,6 @@
       <Events>
         <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="patient_emailFocusGained"/>
         <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="patient_emailFocusLost"/>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="patient_emailActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="patient_telephone">
@@ -322,7 +309,6 @@
       <Events>
         <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="patient_telephoneFocusGained"/>
         <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="patient_telephoneFocusLost"/>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="patient_telephoneActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="text_doctor">
@@ -362,9 +348,6 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Retour"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_cancelActionPerformed"/>
-      </Events>
     </Component>
     <Component class="assets.swing.Button" name="btn_validate">
       <Properties>

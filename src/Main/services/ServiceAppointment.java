@@ -24,8 +24,8 @@ public class ServiceAppointment {
     
     public void createAppoitment(ModelAppointment appointment) throws SQLException {
         PreparedStatement query = conn.prepareStatement(
-                "INSERT INTO `appointment` (`date`, `hour`, `endHour`, `patientID`, `receptionistID`, `doctorID`) "
-                        + "VALUES (?, ?, ?, ?, ?, ?)");
+                "INSERT INTO `appointment` (`date`, `hour`, `endHour`, `patientID`, `receptionistID`, `doctorID`, `serviceID`) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?)");
         
         query.setDate(1, Date.valueOf(appointment.getDate()));
         query.setTime(2, Time.valueOf(appointment.getHour()));
@@ -33,6 +33,7 @@ public class ServiceAppointment {
         query.setInt(4, appointment.getPatient_id());
         query.setInt(5, appointment.getReceptionist_id());
         query.setInt(6, appointment.getDoctor_id());
+        query.setInt(7, appointment.getService_id());
         
         query.execute();
     }
