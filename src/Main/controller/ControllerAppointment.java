@@ -1,8 +1,10 @@
 package main.controller;
 
 import java.sql.SQLException;
+import java.util.Dictionary;
 import main.model.ModelAppointment;
 import main.model.ModelPatient;
+import main.model.ModelStatus;
 import main.services.ServiceAppointment;
 
 /**
@@ -21,5 +23,26 @@ public class ControllerAppointment {
         
         ServiceAppointment serviceAppointment = new ServiceAppointment();
         serviceAppointment.createAppoitment(appointment);
+    }
+    
+    public static Dictionary[] getAppoitementListOfStatus(ModelStatus modelStatus) throws SQLException {
+        ServiceAppointment serviceAppointment = new ServiceAppointment();
+        return  serviceAppointment.getAppoitementsByStatus(modelStatus);
+    }
+    
+    public static void setSatusComplete(int appoitementID) throws SQLException {
+        ModelStatus modelStatus = new ModelStatus();
+        modelStatus.setComplete();
+        
+        ServiceAppointment serviceAppointment = new ServiceAppointment();
+        serviceAppointment.updateStatusID(appoitementID, modelStatus);
+    }
+    
+    public static void setSatusDesable(int appoitementID) throws SQLException {
+         ModelStatus modelStatus = new ModelStatus();
+        modelStatus.setDesabled();
+        
+        ServiceAppointment serviceAppointment = new ServiceAppointment();
+        serviceAppointment.updateStatusID(appoitementID, modelStatus);
     }
 }

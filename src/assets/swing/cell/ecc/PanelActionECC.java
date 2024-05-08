@@ -1,4 +1,4 @@
-package assets.swing.cell;
+package assets.swing.cell.ecc;
 
 import java.awt.event.ActionEvent;
 
@@ -6,24 +6,24 @@ import java.awt.event.ActionEvent;
  *
  * @author malco
  */
-public class PanelAction extends javax.swing.JPanel {
+public class PanelActionECC extends javax.swing.JPanel {
 
     /**
      * Creates new form PanelAction
      */
-    public PanelAction() {
+    public PanelActionECC() {
         initComponents();
     }
     
-    public void initEvent(TableActionEvent event, int row) {
+    public void initEvent(TableActionEventECC event, int row) {
         cmdEdit.addActionListener((ActionEvent ae) -> {
             event.onEdit(row);
         });
-        cmdDesabled.addActionListener((ActionEvent ae) -> {
-            event.onDesable(row);
+        cmdComplete.addActionListener((ActionEvent ae) -> {
+            event.onComplete(row);
         });
-        cmdView.addActionListener((ActionEvent ae) -> {
-            event.onView(row);
+        cmdCancel.addActionListener((ActionEvent ae) -> {
+            event.onCancel(row);
         });
     }
 
@@ -37,14 +37,14 @@ public class PanelAction extends javax.swing.JPanel {
     private void initComponents() {
 
         cmdEdit = new assets.swing.cell.ActionButton();
-        cmdDesabled = new assets.swing.cell.ActionButton();
-        cmdView = new assets.swing.cell.ActionButton();
+        cmdComplete = new assets.swing.cell.ActionButton();
+        cmdCancel = new assets.swing.cell.ActionButton();
 
         cmdEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons/pencil .png"))); // NOI18N
 
-        cmdDesabled.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons/cross-small.png"))); // NOI18N
+        cmdComplete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons/check.png"))); // NOI18N
 
-        cmdView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons/eye.png"))); // NOI18N
+        cmdCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons/cross-small.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -53,28 +53,28 @@ public class PanelAction extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(cmdEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmdDesabled, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmdView, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cmdCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cmdComplete, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cmdView, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmdDesabled, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmdEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmdComplete, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmdEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmdCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private assets.swing.cell.ActionButton cmdDesabled;
+    private assets.swing.cell.ActionButton cmdCancel;
+    private assets.swing.cell.ActionButton cmdComplete;
     private assets.swing.cell.ActionButton cmdEdit;
-    private assets.swing.cell.ActionButton cmdView;
     // End of variables declaration//GEN-END:variables
 }

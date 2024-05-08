@@ -57,7 +57,7 @@ public class PanelHome extends javax.swing.JPanel {
             btn_new_rdv.setForeground(initalBtnNewRdvTextColor);
         }
         
-        RendezVousList = new PanelList();
+        RendezVousList = new PanelList(this.parent);
         scene.add(RendezVousList);
         scene.repaint();
         scene.revalidate();

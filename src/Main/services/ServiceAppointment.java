@@ -7,9 +7,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import main.connection.DatabaseConnection;
 import main.model.ModelAppointment;
+import main.model.ModelStatus;
 
 /**
  *
@@ -38,37 +43,79 @@ public class ServiceAppointment {
         query.execute();
     }
     
-    public ModelAppointment[] getAllUpCommingAppointments() throws SQLException {
-        List<ModelAppointment> upCommingAppointemts = new ArrayList<>();
-        
+    public Dictionary[] getAppoitementsByStatus(ModelStatus modelStatus) throws SQLException {
+        List<Dictionary> appoitementsList = new ArrayList<>();
+  
         String sql = """
-            SELECT * FROM `appointment`
-            WHERE `date` > CURDATE() OR (`date` = CURDATE() AND `hour` >= CURTIME())
-        """;
+                SELECT
+                    appointment.appointmentID AS id,
+                    appointment.date,
+                    appointment.hour,
+                    user.userName AS doctor,
+                    service.title AS reason,
+                    patient.firstName AS patientFirstName,
+                    patient.lastName AS patientLastName,
+                    appoitementstatus.status
+                FROM
+                    appointment
+                JOIN
+                    patient ON appointment.patientID = patient.patientID
+                JOIN
+                    user ON appointment.doctorID = user.userID
+                JOIN
+                    service ON appointment.serviceID = service.serviceID
+                JOIN
+                    appoitementstatus ON appointment.appoitement_statusID = appoitementstatus.appoitement_statusID
+                WHERE
+                    appointment.appoitement_statusID = (
+                            SELECT appoitementstatus.appoitement_statusID
+                            FROM appoitementstatus
+                            WHERE appoitementstatus.status = ?
+                    )
+                ORDER BY
+                    appointment.appointmentID DESC
+            """;
         
-        try (PreparedStatement query = conn.prepareStatement(sql)) {
-            try (ResultSet res = query.executeQuery()) {
-                while (res.next()) {
-                    int appointementId = res.getInt("appoitmentID");
-                    int patientId = res.getInt("patientID");
-                    int doctorId = res.getInt("doctorID");
-                    int receptionistId = res.getInt("receptionistID");
-                    Date date = res.getDate("date");
-                    Time hour = res.getTime("hour");
-                    
-                    ModelAppointment modelAppointment = new ModelAppointment();
-                    modelAppointment.setAppointementID(appointementId);
-                    modelAppointment.setPatient_id(patientId);
-                    modelAppointment.setReceptionist_id(receptionistId);
-                    modelAppointment.setDoctor_id(doctorId);
-                    modelAppointment.setDate(date.toLocalDate());
-                    modelAppointment.setHour(hour.toLocalTime());
-                    
-                    
-                    upCommingAppointemts.add(modelAppointment);
-                }
-            }
+        PreparedStatement query = conn.prepareStatement(sql);
+        query.setString(1, modelStatus.getStatus());
+        
+        ResultSet res = query.executeQuery();
+        
+        while (res.next()) {
+            Dictionary<String, String> appoitementInfos = new Hashtable<>();
+            
+            appoitementInfos.put("id", res.getString("id"));
+            appoitementInfos.put("date", res.getDate("date").toString());
+            appoitementInfos.put("hour", res.getTime("hour").toString());
+            appoitementInfos.put("doctor", res.getString("doctor"));
+            appoitementInfos.put("patientFirstName", res.getString("patientFirstName"));
+            appoitementInfos.put("patientLastName", res.getString("patientLastName"));
+            appoitementInfos.put("reason", res.getString("reason"));
+            appoitementInfos.put("status", res.getString("status"));
+            
+            appoitementsList.add(appoitementInfos);
         }
-        return upCommingAppointemts.toArray(ModelAppointment[]::new);
+        
+        return appoitementsList.toArray(Dictionary[]::new);
+    }
+    
+    public void updateStatusID(int appoitementID, ModelStatus modelStatus) throws SQLException{
+        try {
+            String sql = """
+                            UPDATE appointment
+                            SET appointment.appoitement_statusID = (
+                                SELECT appoitementstatus.appoitement_statusID
+                                FROM appoitementstatus
+                                WHERE appoitementstatus.status = ?
+                            ) WHERE appointment.appointmentID = ?;
+                        """;
+            
+            PreparedStatement query = conn.prepareStatement(sql);
+            query.setString(1, modelStatus.getStatus());
+            query.setInt(2, appoitementID);
+            query.execute();
+        } catch (Exception ex) {
+            Logger.getLogger(ServiceAppointment.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
