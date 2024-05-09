@@ -3,11 +3,10 @@ package main.views;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Dictionary;
 import main.components.appointement.PanelForm;
 import main.components.appointement.PanelList;
+import main.components.appointement.PanelView;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -22,6 +21,7 @@ public class PanelHome extends javax.swing.JPanel {
 
     private PanelForm RendezVousForm;
     private PanelList RendezVousList;
+    private PanelView RendezVousView;
     
     private MigLayout layout;
     
@@ -46,49 +46,56 @@ public class PanelHome extends javax.swing.JPanel {
     private void init() {
         layout = new MigLayout("fill, insets 0");
         scene.setLayout(layout);
-        
         setRendezVousListPanel();
     }
     
+    
+    /** ---------------------------- View Set ---------------------------- */
     private void setRendezVousListPanel() {
-        if(RendezVousForm != null) {
+        if (RendezVousForm != null) {
             scene.remove(RendezVousForm);
             btn_new_rdv.setBackground(iniatlBtnNewRdvColor);
             btn_new_rdv.setForeground(initalBtnNewRdvTextColor);
         }
-        
-        RendezVousList = new PanelList(this.parent);
+        if(RendezVousView != null) {
+            scene.remove(RendezVousView);
+        }
+        RendezVousList = new PanelList(this.parent, this);
         scene.add(RendezVousList);
         scene.repaint();
         scene.revalidate();
     }
-    
-    private void setNewRendezVousForm() throws SQLException {
+    private void setNewRendezVousFormPanel() {
         if(RendezVousList != null) {
             scene.remove(RendezVousList);
             btn_new_rdv.setBackground(focusBtnNewRdvColor);
             btn_new_rdv.setForeground(focusBtnNewRdvTextColor);
         }
-        
+        if(RendezVousView != null) {
+            scene.remove(RendezVousView);
+        }
         ActionListener commande_back;
         commande_back = (ActionEvent e) -> {
             setRendezVousListPanel();
             btn_new_rdv_isActive = false;
         };
-        
-        ActionListener commande_createRendezVous;
-        commande_createRendezVous = (ActionEvent e) -> {
-            createAppoitment();
-        };
-        
-        RendezVousForm = new PanelForm(commande_back, commande_createRendezVous, this.parent);
+        RendezVousForm = new PanelForm(commande_back, this.parent);
         scene.add(RendezVousForm);
         scene.repaint();
         scene.revalidate();
     }
-    
-    private void createAppoitment() {
-        
+    public void setRendezVousViewPanel(Dictionary data) {
+        if(RendezVousList != null) {
+            scene.remove(RendezVousList);
+        }
+        ActionListener commande_back;
+        commande_back = (ActionEvent e) -> {
+            setRendezVousListPanel();
+        };
+        RendezVousView = new PanelView(this.parent, commande_back, data);
+        scene.add(RendezVousView);
+        scene.repaint();
+        scene.revalidate();
     }
 
     @SuppressWarnings("unchecked")
@@ -117,7 +124,7 @@ public class PanelHome extends javax.swing.JPanel {
             .addGroup(HeandPaneLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jLabel11)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         HeandPaneLayout.setVerticalGroup(
             HeandPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,13 +184,9 @@ public class PanelHome extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_new_rdvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_new_rdvActionPerformed
-        try {
-            if(!btn_new_rdv_isActive) {
-                setNewRendezVousForm();
-                btn_new_rdv_isActive = true;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(PanelHome.class.getName()).log(Level.SEVERE, null, ex);
+        if(!btn_new_rdv_isActive) {
+            setNewRendezVousFormPanel();
+            btn_new_rdv_isActive = true;
         }
     }//GEN-LAST:event_btn_new_rdvActionPerformed
 

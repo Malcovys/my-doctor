@@ -25,6 +25,11 @@ public class ControllerAppointment {
         serviceAppointment.createAppoitment(appointment);
     }
     
+    public static Dictionary getAppoitementInfos(int appoitementID) throws SQLException {
+        ServiceAppointment serviceAppointment = new ServiceAppointment();
+        return serviceAppointment.getAppoitementInfos(appoitementID);
+    }
+    
     public static Dictionary[] getAppoitementListOfStatus(ModelStatus modelStatus) throws SQLException {
         ServiceAppointment serviceAppointment = new ServiceAppointment();
         return  serviceAppointment.getAppoitementsByStatus(modelStatus);

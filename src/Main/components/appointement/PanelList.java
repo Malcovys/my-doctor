@@ -16,6 +16,7 @@ import assets.swing.cell.ecc.TableActionEventECC;
 import assets.swing.cell.v.TableActionCellEditorV;
 import assets.swing.cell.v.TableActionCellRenderV;
 import assets.swing.cell.v.TableActionEventV;
+import main.views.PanelHome;
 
 /**
  *
@@ -24,22 +25,23 @@ import assets.swing.cell.v.TableActionEventV;
 public class PanelList extends javax.swing.JPanel {
 
     private final MainView grandParent;
+    private final PanelHome parent;
             
     private Dictionary[] appoitementList;
-    private TableActionEventECC tableActionEventECC;
-    private TableActionEventV tableActionEventV;
-    private DefaultTableModel tableModel;
+    private final TableActionEventECC tableActionEventECC;
+    private final TableActionEventV tableActionEventV;
+    private final DefaultTableModel tableModel;
     private String[] statusList;
     
     /**
      * Creates new form PanalList
      * @param grandParent
-     * @throws java.sql.SQLException
      */
-    public PanelList(MainView grandParent) throws SQLException {
+    public PanelList(MainView grandParent, PanelHome parent) {
         initComponents();
         
-        this.grandParent = grandParent;        
+        this.grandParent = grandParent; 
+        this.parent = parent;
         tableModel = (DefaultTableModel) jTable1.getModel(); // pour l'inction des actions
         
         
@@ -63,7 +65,14 @@ public class PanelList extends javax.swing.JPanel {
                 
                 @Override
                 public void onCancel(int row) {
-                    System.out.println("annuler "  + row);
+                    try {
+                        ControllerAppointment.setSatusDesable(Integer.parseInt(appoitementList[row].get("id").toString()));
+                        setUpcomingAppoitementListToTable();
+                        grandParent.showMessage(Message.MessageType.SUCCESS, "Modification effectué");
+                    } catch (SQLException ex) {
+                        grandParent.showMessage(Message.MessageType.ERROR, "Ereur: onCancel event");
+                        Logger.getLogger(PanelList.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
         };
         
@@ -71,7 +80,13 @@ public class PanelList extends javax.swing.JPanel {
         tableActionEventV = new TableActionEventV() {
             @Override
             public void onView(int row) {
-                System.out.println("voir");
+                try {
+                    Dictionary appoitementInfos = ControllerAppointment.getAppoitementInfos(Integer.parseInt(appoitementList[row].get("id").toString()));
+                    parent.setRendezVousViewPanel(appoitementInfos);
+                } catch (SQLException ex) {
+                    grandParent.showMessage(Message.MessageType.ERROR, "Ereur: onView event");
+                    Logger.getLogger(PanelList.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         };
         
@@ -122,6 +137,12 @@ public class PanelList extends javax.swing.JPanel {
         appoitementList = ControllerAppointment.getAppoitementListOfStatus(modelStatus);  
         setAppoitementListToTable();
     }
+    private void setDesabledAppoitementToTable() throws SQLException { //var used : appoitementList
+        ModelStatus modelStatus = new ModelStatus();
+        modelStatus.setDesabled();
+        appoitementList = ControllerAppointment.getAppoitementListOfStatus(modelStatus);  
+        setAppoitementListToTable();
+    }
     
     
     /* --------------------------- Navigator By Choice_status ----------------------------------- */ 
@@ -149,7 +170,17 @@ public class PanelList extends javax.swing.JPanel {
                         Logger.getLogger(PanelList.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-            case "annuler" -> System.out.println("annuler");
+            case "annuler" -> {
+                try {  
+                        setDesabledAppoitementToTable();
+                        // les actions sur la colone Action
+                        jTable1.getColumnModel().getColumn(7).setCellRenderer(new TableActionCellRenderV()); // le visuel
+                        jTable1.getColumnModel().getColumn(7).setCellEditor(new TableActionCellEditorV(tableActionEventV));// les events 
+                    } catch (SQLException ex) {
+                        grandParent.showMessage(Message.MessageType.ERROR, "Erreur: case terminer");
+                        Logger.getLogger(PanelList.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             default -> throw new AssertionError();
         }
     }

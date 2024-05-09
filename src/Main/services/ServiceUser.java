@@ -50,7 +50,6 @@ public class ServiceUser {
         query.setInt(1, roleID);
         
         ResultSet res = query.executeQuery();
-        
         while (res.next()) {
             userNamesList.add(res.getString("userName"));
         }
@@ -66,9 +65,13 @@ public class ServiceUser {
             JOIN role r ON u.roleID = r.roleID
             WHERE r.title = 'doctor'
             AND u.userID NOT IN (
-                SELECT a.doctorID
-                FROM appointment a
-                WHERE a.date =? AND a.endHour >= ?
+            SELECT a.doctorID
+            FROM appointment a
+            WHERE a.date =? AND a.endHour >= ? AND a.appoitement_statusID = (
+                    SELECT appoitementstatus.appoitement_statusID
+                    FROM appoitementstatus
+                    WHERE appoitementstatus.status = "à venir"
+                )
             )                                           
         """;
        
@@ -77,7 +80,6 @@ public class ServiceUser {
         query.setTime(2, Time.valueOf(hour));
              
         ResultSet res = query.executeQuery();
-
         while (res.next()) {
             freeDoctorList.add(res.getString("userName"));
         }
@@ -92,7 +94,6 @@ public class ServiceUser {
         query.setString(1, userName);
         
         ResultSet res = query.executeQuery();
-        
         if (res.next()) {
             userId = res.getInt("UserID");
         }
@@ -108,7 +109,6 @@ public class ServiceUser {
         query.setString(2, password);
         
         ResultSet res = query.executeQuery();
-        
         if(res.next()) {
             authenticated = true;
         }

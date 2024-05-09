@@ -32,10 +32,9 @@ public class PanelForm extends javax.swing.JPanel {
     /**
      * Creates new form AppointementForm
      * @param commande_back
-     * @param commande_createAppointment
      * @param grandParent
      */
-    public PanelForm(ActionListener commande_back, ActionListener commande_createAppointment, MainView grandParent) {
+    public PanelForm(ActionListener commande_back, MainView grandParent) {
         this.grandParent = grandParent;
         this.modelPatient = new ModelPatient();
         this.patientIsExist = false;
@@ -43,7 +42,6 @@ public class PanelForm extends javax.swing.JPanel {
         initComponents();
         init();
         initCommandeBack(commande_back);
-        initCommandeCreateAppoitment(commande_createAppointment);
     }
     
     private void init() {
@@ -76,10 +74,6 @@ public class PanelForm extends javax.swing.JPanel {
     
     private void initCommandeBack(ActionListener commande_back) {
         btn_cancel.addActionListener(commande_back);
-    }
-    
-    private void initCommandeCreateAppoitment(ActionListener commande_createAppointment) {
-        btn_validate.addActionListener(commande_createAppointment);
     }
     
     private boolean validateTextFields() {
