@@ -45,4 +45,8 @@ public class ServiceFacture {
         return  id;
     }
     
+    public void getFacturesByStatusPaid(boolean  isPaid) {
+        
+    }
+    
 }

@@ -15,6 +15,7 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
 public class MainView extends javax.swing.JPanel {
 
     private PanelHome Home;
+    private PanelFacture Facture;
     
     private JPanel activeNavButton;
     private final Color activeNavColor = new Color(148,215,162);
@@ -38,12 +39,18 @@ public class MainView extends javax.swing.JPanel {
     
     private void nagigateTo(JPanel nav_btn) {
         if(nav_btn == btn_home) {
+            if(Facture != null) {
+                viewPanel.remove(Facture);
+            }
             Home = new PanelHome(this);
-            viewPanel.add(Home, "width " + panelSize + "%, pos 0al 0 n 100%");
-            
+            viewPanel.add(Home, "width " + panelSize + "%, pos 0al 0 n 100%");  
         }
         else if (nav_btn == btn_facture) {
-            viewPanel.remove(Home);
+            if(Home != null) {
+                viewPanel.remove(Home);
+            }
+            Facture = new PanelFacture();
+            viewPanel.add(Facture, "width " + panelSize + "%, pos 0al 0 n 100%");
         }
         
         focusNav(nav_btn);

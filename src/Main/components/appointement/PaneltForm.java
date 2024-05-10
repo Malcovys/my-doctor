@@ -16,7 +16,7 @@ import main.views.MainView;
  *
  * @author malco
  */
-public class PanelForm extends javax.swing.JPanel {
+public class PaneltForm extends javax.swing.JPanel {
     
     private final MainView grandParent;
     
@@ -34,7 +34,7 @@ public class PanelForm extends javax.swing.JPanel {
      * @param commande_back
      * @param grandParent
      */
-    public PanelForm(ActionListener commande_back, MainView grandParent) {
+    public PaneltForm(ActionListener commande_back, MainView grandParent) {
         this.grandParent = grandParent;
         this.modelPatient = new ModelPatient();
         this.patientIsExist = false;
@@ -60,7 +60,7 @@ public class PanelForm extends javax.swing.JPanel {
             }
             
         } catch (SQLException ex) {
-            Logger.getLogger(PanelForm.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PaneltForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -383,7 +383,7 @@ public class PanelForm extends javax.swing.JPanel {
                         grandParent.showMessage(Message.MessageType.SUCCESS, "Enregistrement effectué");
                         
                     } catch (SQLException ex) {
-                        Logger.getLogger(PanelForm.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(PaneltForm.class.getName()).log(Level.SEVERE, null, ex);
                         
                         grandParent.showMessage(Message.MessageType.ERROR, "Une erreur est survenue");
                     }
@@ -458,7 +458,7 @@ public class PanelForm extends javax.swing.JPanel {
                         setPatientData();
                     }
                 } catch (SQLException ex) {
-                    Logger.getLogger(PanelForm.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(PaneltForm.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -475,7 +475,7 @@ public class PanelForm extends javax.swing.JPanel {
                 choice_doctor.add("Aucun docteur disponible");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(PanelForm.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PaneltForm.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         if(freeDoctorsList != null) {
