@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Dictionary;
-import main.components.appointement.PaneltForm;
+import main.components.appointement.PanelForm;
 import main.components.appointement.PanelList;
 import main.components.appointement.PanelView;
 import net.miginfocom.swing.MigLayout;
@@ -19,7 +19,7 @@ public class PanelHome extends javax.swing.JPanel {
     
     private boolean btn_new_rdv_isActive;
 
-    private PaneltForm RendezVousForm;
+    private PanelForm RendezVousForm;
     private PanelList RendezVousList;
     private PanelView RendezVousView;
     
@@ -79,7 +79,7 @@ public class PanelHome extends javax.swing.JPanel {
             setRendezVousListPanel();
             btn_new_rdv_isActive = false;
         };
-        RendezVousForm = new PaneltForm(commande_back, this.parent);
+        RendezVousForm = new PanelForm(commande_back, this.parent);
         scene.add(RendezVousForm);
         scene.repaint();
         scene.revalidate();

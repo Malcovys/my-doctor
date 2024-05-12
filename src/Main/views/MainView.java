@@ -16,8 +16,10 @@ public class MainView extends javax.swing.JPanel {
 
     private PanelHome Home;
     private PanelFacture Facture;
+    private PanelAdmin Admin;
     
     private JPanel activeNavButton;
+    private String activeView;
     private final Color activeNavColor = new Color(148,215,162);
     private final Color navColor = new Color(59,199,125); 
     
@@ -35,28 +37,79 @@ public class MainView extends javax.swing.JPanel {
         viewPanel.setLayout(layout);
         
         nagigateTo(btn_home);
+        activeView = "Home";
     }
     
     private void nagigateTo(JPanel nav_btn) {
-        if(nav_btn == btn_home) {
-            if(Facture != null) {
-                viewPanel.remove(Facture);
+        boolean needToBeRevalidate = false;
+        
+        if(nav_btn == btn_home) 
+        {
+            if(!"Home".equals(activeView)) 
+            {
+                if("Admin".equals(activeView)) 
+                {
+                    viewPanel.remove(Admin);
+                } 
+                else if("Facture".equals(activeView)) 
+                {
+                    viewPanel.remove(Facture);
+                }
+
+                Home = new PanelHome(this);
+                viewPanel.add(Home, "width " + panelSize + "%, pos 0al 0 n 100%");
+                activeView = "Home";
+                needToBeRevalidate = true;
             }
-            Home = new PanelHome(this);
-            viewPanel.add(Home, "width " + panelSize + "%, pos 0al 0 n 100%");  
+            
         }
-        else if (nav_btn == btn_facture) {
-            if(Home != null) {
-                viewPanel.remove(Home);
+        else if (nav_btn == btn_facture) 
+        {
+            if(!"Facture".equals(activeView)) 
+            {
+                if("Admin".equals(activeView)) 
+                {
+                    viewPanel.remove(Admin);
+                } 
+                else if("Home".equals(activeView)) 
+                {
+                    viewPanel.remove(Home);
+                }
+
+                Facture = new PanelFacture(this);
+                viewPanel.add(Facture, "width " + panelSize + "%, pos 0al 0 n 100%");
+                activeView = "Facture";
+                needToBeRevalidate = true;
             }
-            Facture = new PanelFacture();
-            viewPanel.add(Facture, "width " + panelSize + "%, pos 0al 0 n 100%");
+            
+        }
+        else if (nav_btn == btn_admin) 
+        {
+            if(!"Admin".equals(activeView)) 
+            {
+                if("Home".equals(activeView)) 
+                {
+                    viewPanel.remove(Home);
+                } 
+                else if("Facture".equals(activeView)) 
+                {
+                    viewPanel.remove(Facture);
+                }
+
+                Admin = new PanelAdmin(this);
+                viewPanel.add(Admin, "width " + panelSize + "%, pos 0al 0 n 100%");
+                activeView = "Admin";
+                needToBeRevalidate = true;
+            }
+            
         }
         
-        focusNav(nav_btn);
-        
-        viewPanel.repaint();
-        viewPanel.revalidate();
+        if(needToBeRevalidate) 
+        {
+            focusNav(nav_btn);
+            viewPanel.repaint();
+            viewPanel.revalidate(); 
+        }
     }
     
     private void focusNav(JPanel btn)
@@ -158,12 +211,9 @@ public class MainView extends javax.swing.JPanel {
         btn_facture = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         label_text1 = new javax.swing.JLabel();
-        btn_rapport = new javax.swing.JPanel();
+        btn_admin = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         label_text2 = new javax.swing.JLabel();
-        btn_admin = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        label_text3 = new javax.swing.JLabel();
         viewPanel = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -246,40 +296,6 @@ public class MainView extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        btn_rapport.setBackground(new java.awt.Color(59, 199, 125));
-        btn_rapport.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                btn_rapportMousePressed(evt);
-            }
-        });
-
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons/document.png"))); // NOI18N
-
-        label_text2.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        label_text2.setForeground(new java.awt.Color(255, 255, 255));
-        label_text2.setText("Rapport");
-
-        javax.swing.GroupLayout btn_rapportLayout = new javax.swing.GroupLayout(btn_rapport);
-        btn_rapport.setLayout(btn_rapportLayout);
-        btn_rapportLayout.setHorizontalGroup(
-            btn_rapportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(btn_rapportLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                .addComponent(label_text2, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24))
-        );
-        btn_rapportLayout.setVerticalGroup(
-            btn_rapportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(btn_rapportLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(label_text2, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
         btn_admin.setBackground(new java.awt.Color(59, 199, 125));
         btn_admin.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -287,12 +303,12 @@ public class MainView extends javax.swing.JPanel {
             }
         });
 
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons/users.png"))); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons/users.png"))); // NOI18N
 
-        label_text3.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        label_text3.setForeground(new java.awt.Color(255, 255, 255));
-        label_text3.setText("Administration");
+        label_text2.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        label_text2.setForeground(new java.awt.Color(255, 255, 255));
+        label_text2.setText("Administration");
 
         javax.swing.GroupLayout btn_adminLayout = new javax.swing.GroupLayout(btn_admin);
         btn_admin.setLayout(btn_adminLayout);
@@ -300,17 +316,17 @@ public class MainView extends javax.swing.JPanel {
             btn_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(btn_adminLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                .addComponent(label_text3, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(label_text2, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24))
         );
         btn_adminLayout.setVerticalGroup(
             btn_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(btn_adminLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(label_text3, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+                .addComponent(label_text2, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -332,7 +348,6 @@ public class MainView extends javax.swing.JPanel {
                 .addGroup(sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btn_home, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_facture, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_rapport, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_admin, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         sidePanelLayout.setVerticalGroup(
@@ -347,10 +362,8 @@ public class MainView extends javax.swing.JPanel {
                 .addGap(0, 0, 0)
                 .addComponent(btn_facture, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(btn_rapport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
                 .addComponent(btn_admin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(287, Short.MAX_VALUE))
+                .addContainerGap(209, Short.MAX_VALUE))
         );
 
         viewPanel.setBackground(new java.awt.Color(255, 255, 255));
@@ -392,10 +405,6 @@ public class MainView extends javax.swing.JPanel {
         nagigateTo(btn_facture);
     }//GEN-LAST:event_btn_factureMousePressed
 
-    private void btn_rapportMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_rapportMousePressed
-        nagigateTo(btn_rapport);
-    }//GEN-LAST:event_btn_rapportMousePressed
-
     private void btn_adminMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_adminMousePressed
         nagigateTo(btn_admin);
     }//GEN-LAST:event_btn_adminMousePressed
@@ -405,17 +414,14 @@ public class MainView extends javax.swing.JPanel {
     private javax.swing.JPanel btn_admin;
     private javax.swing.JPanel btn_facture;
     private javax.swing.JPanel btn_home;
-    private javax.swing.JPanel btn_rapport;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel label_text;
     private javax.swing.JLabel label_text1;
     private javax.swing.JLabel label_text2;
-    private javax.swing.JLabel label_text3;
     private javax.swing.JPanel sidePanel;
     private javax.swing.JPanel viewPanel;
     // End of variables declaration//GEN-END:variables

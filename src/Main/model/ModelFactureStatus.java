@@ -15,6 +15,10 @@ public class ModelFactureStatus {
         this.isPaid = isPaid;
     }
     
+    public boolean getIsPaid() {
+        return  this.isPaid;
+    }
+    
     public String getStatus() {
         if(isPaid) {
             return "payée";

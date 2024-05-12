@@ -38,7 +38,6 @@ public class ControllerAppointment {
     public static void setSatusComplete(int appoitementID) throws SQLException {
         ModelStatus modelStatus = new ModelStatus();
         modelStatus.setComplete();
-        
         ServiceAppointment serviceAppointment = new ServiceAppointment();
         serviceAppointment.updateStatusID(appoitementID, modelStatus);
     }
@@ -46,7 +45,6 @@ public class ControllerAppointment {
     public static void setSatusDesable(int appoitementID) throws SQLException {
          ModelStatus modelStatus = new ModelStatus();
         modelStatus.setDesabled();
-        
         ServiceAppointment serviceAppointment = new ServiceAppointment();
         serviceAppointment.updateStatusID(appoitementID, modelStatus);
     }

@@ -16,6 +16,7 @@ import assets.swing.cell.ecc.TableActionEventECC;
 import assets.swing.cell.v.TableActionCellEditorV;
 import assets.swing.cell.v.TableActionCellRenderV;
 import assets.swing.cell.v.TableActionEventV;
+import main.controller.ControllerFacture;
 import main.views.PanelHome;
 
 /**
@@ -36,6 +37,7 @@ public class PanelList extends javax.swing.JPanel {
     /**
      * Creates new form PanalList
      * @param grandParent
+     * @param parent
      */
     public PanelList(MainView grandParent, PanelHome parent) {
         initComponents();
@@ -114,15 +116,24 @@ public class PanelList extends javax.swing.JPanel {
     private void setAppoitementListToTable() { //var used : tableModel et appoitementList
         while (tableModel.getRowCount() > 0) { tableModel.removeRow(0); }
         for(Dictionary appoitementInfo : appoitementList){
-            tableModel.addRow(new Object[]{ 
-                appoitementInfo.get("id"), 
-                appoitementInfo.get("date"), 
-                appoitementInfo.get("hour"),
-                appoitementInfo.get("patientFirstName")+" "+appoitementInfo.get("patientLastName"),
-                appoitementInfo.get("doctor"),
-                appoitementInfo.get("reason"),
-                appoitementInfo.get("status")
-            });
+            String factured = "Non";
+            try {
+                if(ControllerFacture.verifieIfExistByAppoitementID(Integer.parseInt(appoitementInfo.get("id").toString()))) {
+                    factured = "Oui";
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(PanelList.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            tableModel.addRow(new Object[]{
+                        appoitementInfo.get("id"),
+                        appoitementInfo.get("date"),
+                        appoitementInfo.get("hour"),
+                        appoitementInfo.get("patientFirstName")+" "+appoitementInfo.get("patientLastName"),
+                        appoitementInfo.get("doctor"),
+                        appoitementInfo.get("reason"),
+                        appoitementInfo.get("status"),
+                        factured,
+                    });
         }     
     }
     private void setUpcomingAppoitementListToTable() throws SQLException { //var used : appoitementList
@@ -152,8 +163,8 @@ public class PanelList extends javax.swing.JPanel {
                     try {
                         setUpcomingAppoitementListToTable();
                         // les actions sur la colone Action
-                        jTable1.getColumnModel().getColumn(7).setCellRenderer(new TableActionCellRenderECC()); // le visuel
-                        jTable1.getColumnModel().getColumn(7).setCellEditor(new TableActionCellEditorECC(tableActionEventECC));// les events 
+                        jTable1.getColumnModel().getColumn(8).setCellRenderer(new TableActionCellRenderECC()); // le visuel
+                        jTable1.getColumnModel().getColumn(8).setCellEditor(new TableActionCellEditorECC(tableActionEventECC));// les events 
                     } catch (SQLException ex) {
                         grandParent.showMessage(Message.MessageType.ERROR, "Erreur: case à venir");
                         Logger.getLogger(PanelList.class.getName()).log(Level.SEVERE, null, ex);
@@ -163,8 +174,8 @@ public class PanelList extends javax.swing.JPanel {
                     try {  
                         setCompletedAppoitementToTable();
                         // les actions sur la colone Action
-                        jTable1.getColumnModel().getColumn(7).setCellRenderer(new TableActionCellRenderV()); // le visuel
-                        jTable1.getColumnModel().getColumn(7).setCellEditor(new TableActionCellEditorV(tableActionEventV));// les events 
+                        jTable1.getColumnModel().getColumn(8).setCellRenderer(new TableActionCellRenderV()); // le visuel
+                        jTable1.getColumnModel().getColumn(8).setCellEditor(new TableActionCellEditorV(tableActionEventV));// les events 
                     } catch (SQLException ex) {
                         grandParent.showMessage(Message.MessageType.ERROR, "Erreur: case terminer");
                         Logger.getLogger(PanelList.class.getName()).log(Level.SEVERE, null, ex);
@@ -174,8 +185,8 @@ public class PanelList extends javax.swing.JPanel {
                 try {  
                         setDesabledAppoitementToTable();
                         // les actions sur la colone Action
-                        jTable1.getColumnModel().getColumn(7).setCellRenderer(new TableActionCellRenderV()); // le visuel
-                        jTable1.getColumnModel().getColumn(7).setCellEditor(new TableActionCellEditorV(tableActionEventV));// les events 
+                        jTable1.getColumnModel().getColumn(8).setCellRenderer(new TableActionCellRenderV()); // le visuel
+                        jTable1.getColumnModel().getColumn(8).setCellEditor(new TableActionCellEditorV(tableActionEventV));// les events 
                     } catch (SQLException ex) {
                         grandParent.showMessage(Message.MessageType.ERROR, "Erreur: case terminer");
                         Logger.getLogger(PanelList.class.getName()).log(Level.SEVERE, null, ex);
@@ -211,14 +222,14 @@ public class PanelList extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID", "Date", "Heure", "Patient", "Docteur", "Raison", "Statut", "Action"
+                "ID", "Date", "Heure", "Patient", "Docteur", "Raison", "Statut", "Facturé", "Action"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, true
+                false, false, false, false, false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {

@@ -3,10 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Dev/Personnel/MyDoctor/src/main/views/PanelHome.java</file>
-            <file>file:/D:/Dev/Personnel/MyDoctor/src/main/controller/ControllerFacture.java</file>
-            <file>file:/D:/Dev/Personnel/MyDoctor/src/main/components/appointement/PanelView.java</file>
-            <file>file:/D:/Dev/Personnel/MyDoctor/src/main/services/ServiceFacture.java</file>
+            <file>file:/D:/Dev/Personnel/MyDoctor/src/main/services/ServiceUser.java</file>
+            <file>file:/D:/Dev/Personnel/MyDoctor/src/main/views/PanelAdmin.java</file>
+            <file>file:/D:/Dev/Personnel/MyDoctor/src/main/components/admin/PanelAdminHome.java</file>
+            <file>file:/D:/Dev/Personnel/MyDoctor/src/main/components/admin/staff/PanelNewStaffForm.java</file>
+            <file>file:/D:/Dev/Personnel/MyDoctor/src/main/controller/ControllerUser.java</file>
+            <file>file:/D:/Dev/Personnel/MyDoctor/src/main/controller/ControllerRole.java</file>
+            <file>file:/D:/Dev/Personnel/MyDoctor/src/main/model/ModelUser.java</file>
         </group>
     </open-files>
 </project-private>

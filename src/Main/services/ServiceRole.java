@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import main.connection.DatabaseConnection;
 
 /**
@@ -28,5 +30,15 @@ public class ServiceRole {
             }
         }
         return roleID;
+    }
+    
+    public String[] getRolesTitle() throws SQLException {
+        List<String> listRoleTitle = new ArrayList<>();
+        PreparedStatement query = conn.prepareStatement("select title FROM role WHERE title != 'admin'");
+        ResultSet res = query.executeQuery();
+        while(res.next()) {
+            listRoleTitle.add(res.getString("title"));
+        }
+        return listRoleTitle.toArray(String[]::new);
     }
 }

@@ -3,7 +3,15 @@ package main.components.facture;
 import assets.swing.cell.v.TableActionCellEditorV;
 import assets.swing.cell.v.TableActionCellRenderV;
 import assets.swing.cell.v.TableActionEventV;
-import main.model.ModelFactureStatus;
+import java.sql.SQLException;
+import java.util.Dictionary;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+import main.components.Message;
+import main.controller.ControllerFacture;
+import main.views.MainView;
+import main.views.PanelFacture;
 
 /**
  *
@@ -11,32 +19,97 @@ import main.model.ModelFactureStatus;
  */
 public class PanelList extends javax.swing.JPanel {
 
+    private final MainView grandParent;
+    private final PanelFacture parent;
+    
+    private final DefaultTableModel tableModel;
+    
+    private Dictionary[] factureList;
+            
     /**
      * Creates new form PanelListFacture
+     * @param grandParent
+     * @param parent
      */
-    public PanelList() {
+    public PanelList(MainView grandParent, PanelFacture parent) {
         initComponents();
+        
+        this.grandParent = grandParent;
+        this.parent = parent;
+                
+        tableModel = (DefaultTableModel) jTable1.getModel();
         
         setFactureStatusInChoiceStatus();
         
         TableActionEventV event = new TableActionEventV() {
             @Override
             public void onView(int row) {
-                System.out.println("View");
+                try {
+                    Dictionary factureData = ControllerFacture.getFactureInfos(Integer.parseInt(factureList[row].get("id").toString()));
+                    parent.setViewFacturePanel(factureData);
+                } catch (SQLException ex) {
+                    grandParent.showMessage(Message.MessageType.ERROR, "Erreur: On view facture");
+                    Logger.getLogger(PanelList.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         };
         
         // les actions sur la colone Action
         jTable1.getColumnModel().getColumn(6).setCellRenderer(new TableActionCellRenderV()); // le visuel
         jTable1.getColumnModel().getColumn(6).setCellEditor(new TableActionCellEditorV(event));// les events 
+        
+        navigateByChoice_status(choice_status.getSelectedItem());
     }
     
     private void setFactureStatusInChoiceStatus() {
-            ModelFactureStatus modelFactureStatus = new ModelFactureStatus();
-            String[] listFactureStatus = modelFactureStatus.getAllStatus();
-            for(String status : listFactureStatus) {
-                choice_status.add(status);
+        String[] listFactureStatus = ControllerFacture.getFactureStatus();
+        for(String status : listFactureStatus) {
+            choice_status.add(status);
+        }
+    }
+    
+    private void setFactureListToTable() {
+         while (tableModel.getRowCount() > 0) { tableModel.removeRow(0); }
+        for(Dictionary factureInfo : factureList){
+            tableModel.addRow(new Object[]{ 
+                factureInfo.get("id"), 
+                factureInfo.get("patientFirstName")+" "+factureInfo.get("patientLastName"),
+                factureInfo.get("reason"),
+                factureInfo.get("appointmentDate"), 
+                factureInfo.get("date"), 
+                factureInfo.get("status")
+            });
+        }
+    }
+    private void setPaidFactureToTable () throws SQLException {
+        factureList = ControllerFacture.getPaidFactures();
+        setFactureListToTable();
+    }
+    private void setUnpaidFactureToTable () throws SQLException {
+        factureList = ControllerFacture.getUnpaidFactures();
+        setFactureListToTable();
+    }
+    
+    private void navigateByChoice_status(String choice_statusSelectedItem ) {
+        switch (choice_statusSelectedItem) {
+            case "payée" -> {
+                try {
+                    setPaidFactureToTable();
+                } catch (SQLException ex) {
+                    grandParent.showMessage(Message.MessageType.ERROR, "Errur: case payée");
+                    Logger.getLogger(PanelList.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
+            case "impayée" -> {
+                try {
+                    setUnpaidFactureToTable();
+                } catch (SQLException ex) {
+                    grandParent.showMessage(Message.MessageType.ERROR, "Errur: case impayée");
+                    Logger.getLogger(PanelList.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            default -> throw new AssertionError();
+        }
     }
 
     /**
@@ -60,14 +133,14 @@ public class PanelList extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Ref", "Patient", "Pour le endez-vous du", "Raison", "Généré le", "Statut", "Actions"
+                "Fact N°", "Patient", "Raison", "Date rendez-vous", "Date facture", "Statut", "Actions"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, false, false, false, true
+                false, false, false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -82,6 +155,12 @@ public class PanelList extends javax.swing.JPanel {
         jTable1.setSelectionBackground(new java.awt.Color(35, 166, 97));
         jTable1.setSelectionForeground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setViewportView(jTable1);
+
+        choice_status.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                choice_statusItemStateChanged(evt);
+            }
+        });
 
         jLabel1.setText("Statut :");
 
@@ -111,6 +190,10 @@ public class PanelList extends javax.swing.JPanel {
                 .addGap(16, 16, 16))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void choice_statusItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_choice_statusItemStateChanged
+        navigateByChoice_status(choice_status.getSelectedItem());
+    }//GEN-LAST:event_choice_statusItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

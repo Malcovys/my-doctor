@@ -10,6 +10,8 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 import main.model.ModelUser;
 
@@ -28,20 +30,13 @@ public class ServiceUser {
     public void insertUser(ModelUser user) throws SQLException {
         PreparedStatement query = conn.prepareStatement(
                 "INSERT INTO `user` (`roleID`, `userName`, `email`, `telephone`, `password`) "
-                        + "VALUES (?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+                        + "VALUES (?, ?, ?, ?, ?)");
         query.setInt(1, user.getRoleID());
         query.setString(2, user.getUser_name());
-        query.setString(4, user.getEmail());
-        query.setString(5, user.getTelephone());
-        query.setString(6, user.getPassword());
+        query.setString(3, user.getEmail());
+        query.setString(4, user.getTelephone());
+        query.setString(5, user.getPassword());
         query.execute();
-        
-        ResultSet res = query.getGeneratedKeys();
-        res.first();
-        int userID = res.getInt(1);
-        res.close();
-        res.close();
-        user.setUserID(userID);
     }
     
    public String[] getAllNames(int roleID) throws SQLException {
@@ -114,5 +109,34 @@ public class ServiceUser {
         }
         
         return authenticated;
+    }
+    
+    public Dictionary[] getUsers() throws SQLException {
+        List<Dictionary> listUser = new ArrayList<>();
+        String sql = """
+                SELECT 
+                    user.userID AS id, user.userName AS name, user.email, user.telephone,
+                    role.title AS poste
+                FROM
+                    user
+                JOIN
+                    role ON user.roleID = role.roleID
+                WHERE 
+                    user.telephone != 'NULL'
+                ORDER BY 
+                    user.userID DESC
+              """;
+        PreparedStatement query = conn.prepareStatement(sql);
+        ResultSet res = query.executeQuery();
+        while (res.next()) {
+            Dictionary<String,String> userInfos = new Hashtable<>();
+            userInfos.put("id", res.getString("id"));
+            userInfos.put("name",res.getString("name"));
+            userInfos.put("email",res.getString("email"));
+            userInfos.put("telephone",res.getString("telephone"));
+            userInfos.put("poste",res.getString("poste"));
+            listUser.add(userInfos);
+        }
+        return listUser.toArray(Dictionary[]::new);
     }
 }

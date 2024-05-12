@@ -2,27 +2,32 @@ package main.views;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Dictionary;
-import main.components.facture.PanelList;
-import main.components.facture.PanelView;
+import main.components.admin.PanelAdminHome;
+import main.components.admin.service.PanelListService;
+import main.components.admin.service.PanelNewServiceForm;
+import main.components.admin.staff.PanelListStaff;
+import main.components.admin.staff.PanelNewStaffForm;
 import net.miginfocom.swing.MigLayout;
 
 /**
  *
  * @author malco
  */
-public class PanelFacture extends javax.swing.JPanel {
-
+public class PanelAdmin extends javax.swing.JPanel {
+    
     private final MainView parent;
     
-    private PanelList FactureList;
-    private PanelView FactureView;
+    private PanelAdminHome AdminHome;
+    private PanelListStaff ListStaff;
+    private PanelListService ListService;
+    private PanelNewServiceForm NewServiceForm;
+    private PanelNewStaffForm NewStaffForm;
     
     /**
-     * Creates new form PanelFacture
+     * Creates new form PanelAdmin
      * @param parent
      */
-    public PanelFacture(MainView parent) {
+    public PanelAdmin(MainView parent) {
         initComponents();
         
         this.parent = parent;
@@ -30,32 +35,66 @@ public class PanelFacture extends javax.swing.JPanel {
         MigLayout layout = new MigLayout("fill, insets 0");
         scene.setLayout(layout);
         
-        setFactureListPanel();
+        setAdminHomePanel();
     }
     
     
-    private void setFactureListPanel() {
-        if(FactureView != null) {
-            scene.remove(FactureView);
-        }
-        FactureList = new PanelList(parent, this);
-        scene.add(FactureList);
+    private void setAdminHomePanel() {
+        AdminHome = new PanelAdminHome(this);
+        scene.add(AdminHome);
         scene.repaint();
         scene.revalidate();
     }
-    public void setViewFacturePanel(Dictionary factureData) {
-        if(FactureList != null) {
-            scene.remove(FactureList);
-        }
+    public void setListStaffPanel() {
         ActionListener commande_back;
         commande_back = (ActionEvent e) -> {
-            setFactureListPanel();
+            scene.remove(ListStaff);
+            setAdminHomePanel();
         };
-        FactureView = new PanelView(parent, factureData, commande_back);
-        scene.add(FactureView);
+        scene.remove(AdminHome);
+        ListStaff = new PanelListStaff(commande_back, parent);
+        scene.add(ListStaff);
         scene.repaint();
         scene.revalidate();
     }
+    public void setNewStaffFormPanel() {
+        ActionListener commande_back;
+        commande_back = (ActionEvent e) -> {
+            scene.remove(NewStaffForm);
+            setAdminHomePanel();
+        };
+        scene.remove(AdminHome);
+        NewStaffForm = new PanelNewStaffForm(commande_back, parent);
+        scene.add(NewStaffForm);
+        scene.repaint();
+        scene.revalidate();
+    }
+    public void setListServicePanel() {
+        ActionListener commande_back;
+        commande_back = (ActionEvent e) -> {
+            scene.remove(ListService);
+            setAdminHomePanel();
+        };
+        scene.remove(AdminHome);
+        ListService = new PanelListService(commande_back, parent);
+        scene.add(ListService);
+        scene.repaint();
+        scene.revalidate();
+    }
+    public void setNewServiceFormPanel() {
+        ActionListener commande_back;
+        commande_back = (ActionEvent e) -> {
+            scene.remove(NewServiceForm);
+            setAdminHomePanel();
+        };
+        scene.remove(AdminHome);
+        NewServiceForm = new PanelNewServiceForm(commande_back, parent);
+        scene.add(NewServiceForm);
+        scene.repaint();
+        scene.revalidate();
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -77,7 +116,7 @@ public class PanelFacture extends javax.swing.JPanel {
 
         jLabel11.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel11.setText("Factures");
+        jLabel11.setText("Administration");
 
         javax.swing.GroupLayout HeandPaneLayout = new javax.swing.GroupLayout(HeandPane);
         HeandPane.setLayout(HeandPaneLayout);
@@ -103,11 +142,11 @@ public class PanelFacture extends javax.swing.JPanel {
         scene.setLayout(sceneLayout);
         sceneLayout.setHorizontalGroup(
             sceneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 977, Short.MAX_VALUE)
         );
         sceneLayout.setVerticalGroup(
             sceneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 477, Short.MAX_VALUE)
+            .addGap(0, 500, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -115,15 +154,14 @@ public class PanelFacture extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(HeandPane, javax.swing.GroupLayout.DEFAULT_SIZE, 977, Short.MAX_VALUE)
-            .addComponent(scene, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(scene, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(HeandPane, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addComponent(scene, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6))
+                .addGap(18, 18, 18)
+                .addComponent(scene, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
