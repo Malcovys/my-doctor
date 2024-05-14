@@ -1,4 +1,4 @@
-package assets.swing.cell.ecc;
+package assets.swing.cell.cc;
 
 import java.awt.event.ActionEvent;
 
@@ -6,19 +6,16 @@ import java.awt.event.ActionEvent;
  *
  * @author malco
  */
-public class PanelActionECC extends javax.swing.JPanel {
+public class PanelActionCC extends javax.swing.JPanel {
 
     /**
      * Creates new form PanelAction
      */
-    public PanelActionECC() {
+    public PanelActionCC() {
         initComponents();
     }
     
-    public void initEvent(TableActionEventECC event, int row) {
-        cmdEdit.addActionListener((ActionEvent ae) -> {
-            event.onEdit(row);
-        });
+    public void initEvent(TableActionEventCC event, int row) {
         cmdComplete.addActionListener((ActionEvent ae) -> {
             event.onComplete(row);
         });
@@ -36,11 +33,8 @@ public class PanelActionECC extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        cmdEdit = new assets.swing.cell.ActionButton();
         cmdComplete = new assets.swing.cell.ActionButton();
         cmdCancel = new assets.swing.cell.ActionButton();
-
-        cmdEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons/pencil .png"))); // NOI18N
 
         cmdComplete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons/check.png"))); // NOI18N
 
@@ -52,8 +46,6 @@ public class PanelActionECC extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(cmdEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(cmdCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(cmdComplete, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -65,7 +57,6 @@ public class PanelActionECC extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cmdComplete, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmdEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmdCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -75,6 +66,5 @@ public class PanelActionECC extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private assets.swing.cell.ActionButton cmdCancel;
     private assets.swing.cell.ActionButton cmdComplete;
-    private assets.swing.cell.ActionButton cmdEdit;
     // End of variables declaration//GEN-END:variables
 }

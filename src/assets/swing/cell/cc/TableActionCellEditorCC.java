@@ -1,4 +1,4 @@
-package assets.swing.cell.ecc;
+package assets.swing.cell.cc;
 
 import java.awt.Component;
 import javax.swing.DefaultCellEditor;
@@ -9,18 +9,18 @@ import javax.swing.JTable;
  *
  * @author RAVEN
  */
-public class TableActionCellEditorECC extends DefaultCellEditor {
+public class TableActionCellEditorCC extends DefaultCellEditor {
 
-    private final TableActionEventECC event;
+    private final TableActionEventCC event;
 
-    public TableActionCellEditorECC(TableActionEventECC event) {
+    public TableActionCellEditorCC(TableActionEventCC event) {
         super(new JCheckBox());
         this.event = event;
     }
 
     @Override
     public Component getTableCellEditorComponent(JTable jtable, Object o, boolean bln, int row, int column) {
-        PanelActionECC action = new PanelActionECC();
+        PanelActionCC action = new PanelActionCC();
         action.initEvent(event, row);
         action.setBackground(jtable.getSelectionBackground());
         return action;

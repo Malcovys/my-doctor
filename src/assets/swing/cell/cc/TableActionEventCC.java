@@ -1,12 +1,10 @@
-package assets.swing.cell.ecc;
+package assets.swing.cell.cc;
 
 /**
  *
  * @author RAVEN
  */
-public interface TableActionEventECC {
-
-    public void onEdit(int row);
+public interface TableActionEventCC {
     
     public void onCancel(int row);
 

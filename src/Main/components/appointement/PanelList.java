@@ -1,7 +1,7 @@
 package main.components.appointement;
 
-import assets.swing.cell.ecc.TableActionCellEditorECC;
-import assets.swing.cell.ecc.TableActionCellRenderECC;
+import assets.swing.cell.cc.TableActionCellEditorCC;
+import assets.swing.cell.cc.TableActionCellRenderCC;
 import java.sql.SQLException;
 import java.util.Dictionary;
 import java.util.logging.Level;
@@ -12,12 +12,12 @@ import main.controller.ControllerAppointment;
 import main.controller.ControllerStatus;
 import main.model.ModelStatus;
 import main.views.MainView;
-import assets.swing.cell.ecc.TableActionEventECC;
 import assets.swing.cell.v.TableActionCellEditorV;
 import assets.swing.cell.v.TableActionCellRenderV;
 import assets.swing.cell.v.TableActionEventV;
 import main.controller.ControllerFacture;
 import main.views.PanelHome;
+import assets.swing.cell.cc.TableActionEventCC;
 
 /**
  *
@@ -29,7 +29,7 @@ public class PanelList extends javax.swing.JPanel {
     private final PanelHome parent;
             
     private Dictionary[] appoitementList;
-    private final TableActionEventECC tableActionEventECC;
+    private final TableActionEventCC tableActionEventECC;
     private final TableActionEventV tableActionEventV;
     private final DefaultTableModel tableModel;
     private String[] statusList;
@@ -47,12 +47,7 @@ public class PanelList extends javax.swing.JPanel {
         tableModel = (DefaultTableModel) jTable1.getModel(); // pour l'inction des actions
         
         
-        tableActionEventECC = new TableActionEventECC() {
-                @Override
-                public void onEdit(int row) {
-                    System.out.println("Edit " + row);
-                }
-                
+        tableActionEventECC = new TableActionEventCC() {
                 @Override
                 public void onComplete(int row) {
                     try {
@@ -163,8 +158,8 @@ public class PanelList extends javax.swing.JPanel {
                     try {
                         setUpcomingAppoitementListToTable();
                         // les actions sur la colone Action
-                        jTable1.getColumnModel().getColumn(8).setCellRenderer(new TableActionCellRenderECC()); // le visuel
-                        jTable1.getColumnModel().getColumn(8).setCellEditor(new TableActionCellEditorECC(tableActionEventECC));// les events 
+                        jTable1.getColumnModel().getColumn(8).setCellRenderer(new TableActionCellRenderCC()); // le visuel
+                        jTable1.getColumnModel().getColumn(8).setCellEditor(new TableActionCellEditorCC(tableActionEventECC));// les events 
                     } catch (SQLException ex) {
                         grandParent.showMessage(Message.MessageType.ERROR, "Erreur: case à venir");
                         Logger.getLogger(PanelList.class.getName()).log(Level.SEVERE, null, ex);

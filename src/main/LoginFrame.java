@@ -1,4 +1,4 @@
-package main.views;
+package main;
 
 
 import java.awt.event.ActionEvent;
@@ -19,7 +19,7 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
  *
  * @author malco
  */
-public class Login extends javax.swing.JFrame {
+public class LoginFrame extends javax.swing.JFrame {
     
     private MigLayout layout;
     private PanelLoading loading;
@@ -29,9 +29,9 @@ public class Login extends javax.swing.JFrame {
     private final float loginSize = 60f; 
     
     private  ServiceUser service;
-    
+    private AppFrame App;
 
-    public Login() {
+    public LoginFrame() {
         initComponents();
         init();
     }
@@ -57,6 +57,12 @@ public class Login extends javax.swing.JFrame {
         bg.add(login, "width " + loginSize + "%, pos 1al 0 n 100%");
     }
     
+    private void setAppFrame() {
+        App = new AppFrame();
+        App.setVisible(true);
+        dispose();
+    }
+    
     private void login(){
         loading.setVisible(true);
         String email = login.getEmail();
@@ -66,6 +72,9 @@ public class Login extends javax.swing.JFrame {
             if(service.authUser(email, password)) {
                 loading.setVisible(false);
                 showMessage(Message.MessageType.SUCCESS, "Authentified");
+                
+                setAppFrame();
+                
             } else {
                 loading.setVisible(false);
                 showMessage(Message.MessageType.ERROR, "Unauthentified");
@@ -202,7 +211,7 @@ public class Login extends javax.swing.JFrame {
         }
         
         java.awt.EventQueue.invokeLater(() -> {
-            new Login().setVisible(true);
+            new LoginFrame().setVisible(true);
         });
     }
 
